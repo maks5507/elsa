@@ -1,0 +1,8 @@
+setuptools~=40.8.0
+numpy~=1.18.0
+pymorphy2~=0.8
+nltk~=3.4.5
+rusyllab~=0.0.3
+spacy~=2.1.0
+ufal.udpipe~==1.2.0.3
+fasttext~==0.9.2
