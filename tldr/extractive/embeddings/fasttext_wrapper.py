@@ -1,15 +1,15 @@
 #
-# Created by
+# Created by Mars Wei-Lun Huang (wh2103@nyu.edu)
 #
 
 
-import fasttext
+import fasttext as ft
 import numpy as np
 
 
 class FastTextWrapper:
     def __init__(self):
-        self.model = FastText()
+        self.model = None
 
     def fit(self, corpora: str):
         """
@@ -17,11 +17,11 @@ class FastTextWrapper:
         """
         pass
 
-    def inference(self, sentence) -> np.ndarray:
+    def inference(self, sentence: str) -> np.ndarray:
         """
         build an embedding for given sentence
         """
-        pass
+        return self.model.get_sentence_vector(sentence)
 
     def dump(self):
         """
@@ -33,4 +33,4 @@ class FastTextWrapper:
         """
         loads pretrained model from disk
         """
-        self.model =
+        self.model = ft.load_model(model_path)

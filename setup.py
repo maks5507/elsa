@@ -25,4 +25,3 @@ setup_kwargs = dict(
 )
 
 setup(**setup_kwargs)
-

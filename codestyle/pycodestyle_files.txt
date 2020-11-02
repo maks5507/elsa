@@ -1,1 +1,4 @@
 ../*.py
+../tldr/extractive/*.py
+../tldr/extractive/textrank/*.py
+../tldr/extractive/embeddings/*.py
