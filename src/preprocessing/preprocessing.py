@@ -1,6 +1,6 @@
 #
 # Created by
-# jeff
+# Eric
 
 import re
 from nltk.tokenize.toktok import ToktokTokenizer
