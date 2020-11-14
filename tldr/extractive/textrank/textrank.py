@@ -3,7 +3,7 @@
 #
 
 from typing import List, Tuple, Dict
-from .util import Util
+from ..util import Util
 
 
 class Textrank:

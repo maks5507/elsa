@@ -1,4 +1,6 @@
 ../*.py
 ../tldr/extractive/*.py
 ../tldr/extractive/textrank/*.py
+../tldr/extractive/util/*.py
+../tldr/extractive/centroid/*.py
 ../tldr/extractive/embeddings/*.py

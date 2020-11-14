@@ -23,7 +23,7 @@ class Util:
         n = len(sentence_vectors)
         sim_matrix = np.zeros([n, n])
         if not sim_func:
-            sim_func = cls.cosine_similarity
+            sim_func = cls.compute_cosine_similarity
         for i, sentence_vector in enumerate(sentence_vectors):
             sim_matrix[i][i] = 1
             for j in range(i + 1, n):
@@ -69,8 +69,9 @@ class Util:
         return [fasttext_wrapper.inference(sentence) for sentence in sentences]
 
     @staticmethod
-    def cosine_similarity(sentence_vector: Union[np.ndarray, sp_sp.spmatrix],
-                          sentence_vector2: Union[np.ndarray, sp_sp.spmatrix]) -> float:
+    def compute_cosine_similarity(
+            sentence_vector: Union[np.ndarray, sp_sp.spmatrix],
+            sentence_vector2: Union[np.ndarray, sp_sp.spmatrix]) -> float:
         """
         Params:
             - sentence_vector: sentence vector
@@ -85,6 +86,10 @@ class Util:
         else:
             score /= (norm(sentence_vector) * norm(sentence_vector2))
         return score
+
+    @staticmethod
+    def compute_centroid(sentence_vectors: List[np.ndarray]) -> np.ndarray:
+        return np.mean(np.array(sentence_vectors), 0)
 
     @staticmethod
     def pagerank(M, num_iterations: int = 100, d: float = 0.85):
