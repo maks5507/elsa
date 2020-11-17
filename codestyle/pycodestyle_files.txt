@@ -1,1 +1,4 @@
-../*.py
+../src/abstractive/*.py
+../src/abstractive/tokenizers/*.py
+../src/abstractive/abstractive_model/*.py
+../src/abstractive/extractive_attention_mask/*.py
