@@ -3,7 +3,7 @@
 #
 
 import torch
-from typing import Any, List
+from typing import Any, List, Tuple
 
 
 class BaseTokenizerWithMapping:
@@ -15,7 +15,7 @@ class BaseTokenizerWithMapping:
         self.starting_tokens_ids = torch.Tensor(starting_tokens_ids).to(torch.int64)
         self.ending_token_ids = torch.Tensor(ending_tokens_ids).to(torch.int64)
 
-    def tokenize(self, sentences):
+    def tokenize(self, sentences: List[str]) -> object:
         mapping = []
         tokenized_sequence = []
 
