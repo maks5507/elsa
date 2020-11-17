@@ -44,10 +44,10 @@ class AbstractiveModel:
         self.base_model_name = base_model_name.lower()
         self.dataset = dataset.lower()
 
-        self.tokenizer = self.setup_mapping[self.base_model_name]['tokenizer']
+        self.tokenizer = self.setup_mapping[self.base_model_name]['tokenizer']()
 
         self.base_model_class = self.setup_mapping[self.base_model_name]['base_model']
-        self.base_model = self.base_model_class.from_pretrained(self.datasets_mapping[self.dataset])
+        self.base_model = self.base_model_class.from_pretrained(self.datasets_mapping[self.base_model_name][self.dataset])
 
         self.extractive_attention_mask = ExtractiveAttentionMask()
 
@@ -59,6 +59,6 @@ class AbstractiveModel:
         attention_mask = self.extractive_attention_mask(mapping, sentence_scores)
 
         summary = self.base_model.generate(input_ids=tokenized_sequence, attention_mask=attention_mask,
-                                           **base_model_params)
+                                           decoder_start_token_id=self.tokenizer.bos_token_id, **base_model_params)
 
-        return self.tokenizer.batch_decode(summary, skip_special_tokens=True)[0]
+        return self.tokenizer.decode(summary)
