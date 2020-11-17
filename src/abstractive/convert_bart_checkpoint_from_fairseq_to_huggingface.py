@@ -1,4 +1,9 @@
-from src import BartForConditionalGeneration, MBartConfig
+#
+# Created by mae9785 (eremeev@nyu.edu)
+#
+
+from .models import BartForConditionalGeneration
+from transformers import MBartConfig
 import torch
 from transformers.convert_bart_original_pytorch_checkpoint_to_pytorch import remove_ignore_keys_
 
