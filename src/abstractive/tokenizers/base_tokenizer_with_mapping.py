@@ -22,7 +22,7 @@ class BaseTokenizerWithMapping:
         tokenized_sentences = self.main_tokenizer(sentences)['input_ids']
         for i, sentence in tokenized_sentences:
             mapping += [i] * (len(sentence) - self.truncate_left - self.truncate_right)
-            tokenized_sentences += [sentence[self.truncate_left:-self.truncate_right]]
+            tokenized_sentences += sentence[self.truncate_left:-self.truncate_right]
 
         tokenized_sequence_tensor = torch.Tensor(tokenized_sequence).to(torch.int64)
         tokenized_sequence_tensor = torch.cat([self.starting_tokens_ids, tokenized_sequence_tensor,
