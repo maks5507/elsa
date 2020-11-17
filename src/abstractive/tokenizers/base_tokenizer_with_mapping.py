@@ -14,7 +14,7 @@ class BaseTokenizerWithMapping:
         self.truncate_right = truncate_right
         self.starting_tokens_ids = torch.Tensor(starting_tokens_ids).to(torch.int64)
         self.ending_tokens_ids = torch.Tensor(ending_tokens_ids).to(torch.int64)
-        
+
         self.bos_token_id = self.main_tokenizer.bos_token_id
         self.eos_token_id = self.main_tokenizer.eos_token_id
         self.pad_token_id = self.main_tokenizer.pad_token_id
@@ -42,4 +42,3 @@ class BaseTokenizerWithMapping:
 
     def decode(self, summary: torch.Tensor) -> str:
         return self.main_tokenizer.batch_decode(summary, skip_special_tokens=True)[0]
-
