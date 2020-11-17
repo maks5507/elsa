@@ -4,6 +4,7 @@
 
 import re
 from nltk.tokenize.toktok import ToktokTokenizer
+from typing import List, Tuple
 
 
 class Preprocessing:
@@ -19,7 +20,7 @@ class Preprocessing:
             return text.split()
         return self.preproc(text, **preprocess_params).split()
 
-    def preproc(self, text:, check_stopwords=True) -> str:
+    def preproc(self, text, check_stopwords=True) -> str:
         s = re.sub("\n", r" ", text)
         s = s.lower()
         s = self.rgc.sub(" ", s)

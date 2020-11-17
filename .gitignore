@@ -4,3 +4,4 @@
 __pycache__
 
 *.pyc
+./tldr/extractive/embeddings/model/*
