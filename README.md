@@ -1,3 +1,9 @@
+<p align="center">
+    <br>
+    <img src="http://maksimeremeev.com/files/elsa.png" width="400"/>
+    <br>
+<p>
+
 # ELSA: Extractive Linking of Summarizarion Approaches
 
 Authors: Maksim Eremeev, Wei-Lun Huang, Eric Spector, Jeffrey Tumminia
