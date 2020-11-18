@@ -1,6 +1,6 @@
 <p align="center">
     <br>
-    <img src="http://maksimeremeev.com/files/elsa.png" width="300"/>
+    <img src="http://maksimeremeev.com/files/elsa.png"/>
     <br>
 <p>
 
