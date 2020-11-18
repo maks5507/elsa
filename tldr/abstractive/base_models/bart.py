@@ -1,55 +1,8 @@
-# coding=utf-8
-# Copyright 2020 The Facebook AI Research Team Authors and The HuggingFace Inc. team.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-
 #
 # Created by FAIR and HuggingFace
 # Adapted by Maksim Eremeev (mae9785@nyu.edu)
 #
 
-"""PyTorch BART model, ported from the fairseq repo."""
-import math
-import random
-import warnings
-from typing import Dict, List, Optional, Tuple
-
-import numpy as np
-import torch
-import torch.nn.functional as F
-from torch import Tensor, nn
-from torch.nn import CrossEntropyLoss
-
-from transformers.activations import ACT2FN
-from transformers.configuration_bart import BartConfig
-from transformers.file_utils import (
-    add_code_sample_docstrings,
-    add_end_docstrings,
-    add_start_docstrings,
-    add_start_docstrings_to_model_forward,
-    replace_return_docstrings,
-)
-from transformers.modeling_outputs import (
-    BaseModelOutput,
-    BaseModelOutputWithPastAndCrossAttentions,
-    Seq2SeqLMOutput,
-    Seq2SeqModelOutput,
-    Seq2SeqQuestionAnsweringModelOutput,
-    Seq2SeqSequenceClassifierOutput,
-)
-from transformers.modeling_utils import PreTrainedModel
-from transformers.utils import logging
 from transformers.modeling_bart import *
 
 _CONFIG_FOR_DOC = "BartConfig"
@@ -83,16 +36,8 @@ class DecoderLayer(nn.Module):
         self.fc2 = nn.Linear(config.decoder_ffn_dim, self.embed_dim)
         self.final_layer_norm = LayerNorm(self.embed_dim)
 
-    def forward(
-        self,
-        x,
-        encoder_hidden_states,
-        encoder_attn_mask=None,
-        layer_state=None,
-        causal_mask=None,
-        decoder_padding_mask=None,
-        output_attentions=False,
-    ):
+    def forward(self, x, encoder_hidden_states, encoder_attn_mask=None, layer_state=None,
+                causal_mask=None, decoder_padding_mask=None, output_attentions=False):
         residual = x
         if layer_state is None:
             layer_state = {}
@@ -150,14 +95,6 @@ class DecoderLayer(nn.Module):
 
 
 class BartDecoder(nn.Module):
-    """
-    Transformer decoder consisting of *config.decoder_layers* layers. Each layer is a :class:`DecoderLayer`
-
-    Args:
-        config: BartConfig
-        embed_tokens (torch.nn.Embedding): output embedding
-    """
-
     def __init__(self, config: BartConfig, embed_tokens: nn.Embedding):
         super().__init__()
         self.dropout = config.dropout
@@ -184,40 +121,9 @@ class BartDecoder(nn.Module):
         self.layernorm_embedding = LayerNorm(config.d_model) if config.normalize_embedding else nn.Identity()
         self.layer_norm = LayerNorm(config.d_model) if config.add_final_layer_norm else None
 
-    def forward(
-        self,
-        input_ids,
-        encoder_hidden_states,
-        encoder_padding_mask,
-        decoder_padding_mask,
-        decoder_causal_mask,
-        past_key_values=None,
-        use_cache=False,
-        output_attentions=False,
-        output_hidden_states=False,
-        return_dict=False,
-        **unused,
-    ):
-        """
-        Includes several features from "Jointly Learning to Align and Translate with Transformer Models" (Garg et al.,
-        EMNLP 2019).
-
-        Args:
-            input_ids (LongTensor): previous decoder outputs of shape
-                `(batch, tgt_len)`, for teacher forcing
-            encoder_hidden_states: output from the encoder, used for
-                encoder-side attention
-            encoder_padding_mask: for ignoring pad tokens
-            past_key_values (dict or None): dictionary used for storing state during generation
-
-        Returns:
-            BaseModelOutputWithPast or tuple:
-
-                - the decoder's features of shape `(batch, tgt_len, embed_dim)`
-                - the cache
-                - hidden states
-                - attentions
-        """
+    def forward(self, input_ids, encoder_hidden_states, encoder_padding_mask,
+                decoder_padding_mask, decoder_causal_mask, past_key_values=None, use_cache=False,
+                output_attentions=False, output_hidden_states=False, return_dict=False, **unused):
         if "decoder_cached_states" in unused:
             warnings.warn(
                 "The `decoder_cached_states` argument is deprecated and will be removed in a future version, use `past_key_values` instead.",
@@ -232,7 +138,7 @@ class BartDecoder(nn.Module):
             past_key_values = unused.pop("decoder_past_key_values")
 
         # check attention mask and invert
-        #if encoder_padding_mask is not None:
+        # if encoder_padding_mask is not None:
         #    encoder_padding_mask = invert_mask(encoder_padding_mask)
 
         # embed positions
@@ -314,14 +220,8 @@ class BartDecoder(nn.Module):
 class Attention(nn.Module):
     """Multi-headed attention from 'Attention Is All You Need' paper"""
 
-    def __init__(
-        self,
-        embed_dim,
-        num_heads,
-        dropout=0.0,
-        bias=True,
-        encoder_decoder_attention=False,  # otherwise self_attention
-    ):
+    def __init__(self, embed_dim, num_heads, dropout=0.0, bias=True,
+                 encoder_decoder_attention=False):
         super().__init__()
         self.embed_dim = embed_dim
         self.num_heads = num_heads
@@ -341,13 +241,13 @@ class Attention(nn.Module):
         return tensor.contiguous().view(seq_len, bsz * self.num_heads, self.head_dim).transpose(0, 1)
 
     def forward(
-        self,
-        query,
-        key: Tensor,
-        key_padding_mask: Optional[Tensor] = None,
-        layer_state: Optional[Dict[str, Tensor]] = None,
-        attn_mask: Optional[Tensor] = None,
-        output_attentions=False,
+            self,
+            query,
+            key: Tensor,
+            key_padding_mask: Optional[Tensor] = None,
+            layer_state: Optional[Dict[str, Tensor]] = None,
+            attn_mask: Optional[Tensor] = None,
+            output_attentions=False,
     ) -> Tuple[Tensor, Optional[Tensor]]:
         """Input shape: Time(SeqLen) x Batch x Channel"""
         static_kv: bool = self.encoder_decoder_attention
@@ -429,6 +329,7 @@ class Attention(nn.Module):
         new_V = prev_V if static_kv else torch.cat([prev_V, v], dim=1)
         return new_K, new_V
 
+
 class BartForConditionalGeneration(PretrainedBartModel):
     base_model_prefix = "model"
     authorized_missing_keys = [r"final_logits_bias", r"encoder\.version", r"decoder\.version"]
@@ -454,50 +355,9 @@ class BartForConditionalGeneration(PretrainedBartModel):
             new_bias = torch.cat([self.final_logits_bias, extra_bias], dim=1)
         self.register_buffer("final_logits_bias", new_bias)
 
-    @add_start_docstrings_to_model_forward(BART_INPUTS_DOCSTRING)
-    @replace_return_docstrings(output_type=Seq2SeqLMOutput, config_class=_CONFIG_FOR_DOC)
-    @add_end_docstrings(BART_GENERATION_EXAMPLE)
-    def forward(
-        self,
-        input_ids,
-        attention_mask=None,
-        decoder_input_ids=None,
-        decoder_attention_mask=None,
-        encoder_outputs=None,
-        past_key_values=None,
-        labels=None,
-        use_cache=None,
-        output_attentions=None,
-        output_hidden_states=None,
-        return_dict=None,
-        **unused,
-    ):
-        r"""
-        labels (:obj:`torch.LongTensor` of shape :obj:`(batch_size, sequence_length)`, `optional`):
-            Labels for computing the masked language modeling loss. Indices should either be in ``[0, ...,
-            config.vocab_size]`` or -100 (see ``input_ids`` docstring). Tokens with indices set to ``-100`` are ignored
-            (masked), the loss is only computed for the tokens with labels in ``[0, ..., config.vocab_size]``.
-
-        Returns:
-
-        Conditional generation example::
-
-            >>> # Mask filling only works for bart-large
-            >>> from transformers import BartTokenizer, BartForConditionalGeneration
-            >>> tokenizer = BartTokenizer.from_pretrained('facebook/bart-large')
-            >>> TXT = "My friends are <mask> but they eat too many carbs."
-
-            >>> model = BartForConditionalGeneration.from_pretrained('facebook/bart-large')
-            >>> input_ids = tokenizer([TXT], return_tensors='pt')['input_ids']
-            >>> logits = model(input_ids).logits
-
-            >>> masked_index = (input_ids[0] == tokenizer.mask_token_id).nonzero().item()
-            >>> probs = logits[0, masked_index].softmax(dim=0)
-            >>> values, predictions = probs.topk(5)
-
-            >>> tokenizer.decode(predictions).split()
-            >>> # ['good', 'great', 'all', 'really', 'very']
-        """
+    def forward(self, input_ids, attention_mask=None, decoder_input_ids=None, decoder_attention_mask=None,
+                encoder_outputs=None, past_key_values=None, labels=None, use_cache=None, output_attentions=None,
+                output_hidden_states=None, return_dict=None, **unused):
         if "lm_labels" in unused:
             warnings.warn(
                 "The `lm_labels` argument is deprecated and will be removed in a future version, use `labels` instead.",
@@ -523,18 +383,17 @@ class BartForConditionalGeneration(PretrainedBartModel):
             if decoder_input_ids is None:
                 decoder_input_ids = shift_tokens_right(labels, self.config.pad_token_id)
 
-        outputs = self.model(
-            input_ids,
-            attention_mask=attention_mask,
-            decoder_input_ids=decoder_input_ids,
-            encoder_outputs=encoder_outputs,
-            decoder_attention_mask=decoder_attention_mask,
-            past_key_values=past_key_values,
-            use_cache=use_cache,
-            output_attentions=output_attentions,
-            output_hidden_states=output_hidden_states,
-            return_dict=return_dict,
-        )
+        outputs = self.model(input_ids,
+                             attention_mask=attention_mask,
+                             decoder_input_ids=decoder_input_ids,
+                             encoder_outputs=encoder_outputs,
+                             decoder_attention_mask=decoder_attention_mask,
+                             past_key_values=past_key_values,
+                             use_cache=use_cache,
+                             output_attentions=output_attentions,
+                             output_hidden_states=output_hidden_states,
+                             return_dict=return_dict)
+
         if hasattr(self, 'output_projection'):
             lm_logits = F.linear(outputs[0], self.output_projection, bias=False)
         else:
@@ -550,20 +409,18 @@ class BartForConditionalGeneration(PretrainedBartModel):
             output = (lm_logits,) + outputs[1:]
             return ((masked_lm_loss,) + output) if masked_lm_loss is not None else output
 
-        return Seq2SeqLMOutput(
-            loss=masked_lm_loss,
-            logits=lm_logits,
-            past_key_values=outputs.past_key_values,
-            decoder_hidden_states=outputs.decoder_hidden_states,
-            decoder_attentions=outputs.decoder_attentions,
-            cross_attentions=outputs.cross_attentions,
-            encoder_last_hidden_state=outputs.encoder_last_hidden_state,
-            encoder_hidden_states=outputs.encoder_hidden_states,
-            encoder_attentions=outputs.encoder_attentions,
-        )
+        return Seq2SeqLMOutput(loss=masked_lm_loss,
+                               logits=lm_logits,
+                               past_key_values=outputs.past_key_values,
+                               decoder_hidden_states=outputs.decoder_hidden_states,
+                               decoder_attentions=outputs.decoder_attentions,
+                               cross_attentions=outputs.cross_attentions,
+                               encoder_last_hidden_state=outputs.encoder_last_hidden_state,
+                               encoder_hidden_states=outputs.encoder_hidden_states,
+                               encoder_attentions=outputs.encoder_attentions)
 
     def prepare_inputs_for_generation(
-        self, decoder_input_ids, past=None, attention_mask=None, use_cache=None, encoder_outputs=None, **kwargs
+            self, decoder_input_ids, past=None, attention_mask=None, use_cache=None, encoder_outputs=None, **kwargs
     ):
         return {
             "input_ids": None,  # encoder_outputs is defined. input_ids not needed
@@ -609,6 +466,7 @@ def _make_linear_from_emb(emb):
     lin_layer = nn.Linear(vocab_size, emb_size, bias=False)
     lin_layer.weight.data = emb.weight.data
     return lin_layer
+
 
 def _reorder_buffer(attn_cache: Dict, new_order) -> Dict:
     for k, input_buffer_k in attn_cache.items():

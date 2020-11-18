@@ -1,24 +1,25 @@
 #
-# Created by mae9785 (eremeev@nyu.edu)
+# Created by Maksim Eremeev (mae9785@nyu.edu)
 #
+
+from typing import List
 
 from .preprocessing import Preprocessing, UDPipeTokenizer, SentenceTokenizer, \
     SentenceFiltering, CoreferenceResolution
 
 from .extractive import AggregatedSummarizer
-from .abstractive import mBartWrapper, AttentionMask
+from .abstractive import AbstractiveModel
 
 
-class Pipeline:
+class Elsa:
     def __init__(self, weights: List[float]):
         self.preprocessing = Preprocessing(stopwords='../data/stopwords.txt')
         self.udpipe_tokenizer = UDPipeTokenizer()
-        self.sentence_tokenizer = SentenceTokenizer()
+        #self.sentence_tokenizer = SentenceTokenizer()
         self.sentence_filtering = SentenceFiltering()
         self.coreference_resolution = CoreferenceResolution()
-        self.attention_mask = AttentionMask()
         self.extractive = AggregatedSummarizer(weights)
-        self.abstractive = mBartWrapper()
+        self.abstractive_model = AbstractiveModel()
 
     def summarize(self, text: str, factor: float) -> str:
         cf_text = self.coreference_resolution.resolve(text)
@@ -41,7 +42,7 @@ class Pipeline:
 
         selected_sentences = self.extractive.summarize(filtered_preprocessed_sentences, factor)
         attention_mask = self.attention_maks.generate(filtered_preprocessed_sentences, selected_sentences)
-        summary = self.abstractive.summarize(filtered_preprocessed_sentences, attention_mask)
+        summary = self.abstractive_model.summarize(filtered_preprocessed_sentences, attention_mask)
 
         return summary
 
