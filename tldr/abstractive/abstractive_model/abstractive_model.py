@@ -19,7 +19,7 @@ class AbstractiveModel:
             'gazeta.ru': '../../../data/mbart-checkpoint-gazeta.pt'
         },
         'pegasus': {
-            'cnn': 'google/pegasus-cnn',
+            'cnn': 'google/pegasus-cnn_dailymail',
             'xsum': 'google/pegasus-xsum',
             'gigaword': 'google/pegasus-gigaword'
         }
