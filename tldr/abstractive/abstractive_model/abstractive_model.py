@@ -1,5 +1,5 @@
 #
-# Created by mae9785 (eremeev@nyu.edu)
+# Created by Maksim Eremeev (mae9785@nyu.edu)
 #
 
 from typing import List
@@ -19,7 +19,7 @@ class AbstractiveModel:
             'gazeta.ru': '../../../data/mbart-checkpoint-gazeta.pt'
         },
         'pegasus': {
-            'cnn': 'google/pegasus-cnn',
+            'cnn': 'google/pegasus-cnn_dailymail',
             'xsum': 'google/pegasus-xsum',
             'gigaword': 'google/pegasus-gigaword'
         }
@@ -47,7 +47,9 @@ class AbstractiveModel:
         self.tokenizer = self.setup_mapping[self.base_model_name]['tokenizer']()
 
         self.base_model_class = self.setup_mapping[self.base_model_name]['base_model']
-        self.base_model = self.base_model_class.from_pretrained(self.datasets_mapping[self.base_model_name][self.dataset])
+        self.base_model = self.base_model_class.from_pretrained(
+            self.datasets_mapping[self.base_model_name][self.dataset]
+        )
 
         self.extractive_attention_mask = ExtractiveAttentionMask()
 

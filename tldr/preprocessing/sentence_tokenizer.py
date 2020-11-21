@@ -1,6 +1,9 @@
 #
-# Created by
+# Created by Eric Spector
 #
+
+from typing import List
+from nltk.tokenize import PunktSentenceTokenizer
 
 
 class SentenceTokenizer:
@@ -11,4 +14,6 @@ class SentenceTokenizer:
         """
         returns: list of sentences
         """
-        pass
+        sent_tokenizer = PunktSentenceTokenizer(text)
+        sent_toks = sent_tokenizer.tokenize(text)
+        return sent_toks

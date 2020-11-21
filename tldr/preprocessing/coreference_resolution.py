@@ -1,5 +1,5 @@
 #
-# Created by
+# Created by Eric Spector
 #
 
 import neuralcoref
@@ -15,4 +15,5 @@ class CoreferenceResolution:
         """
         return: text with resolved coreferences
         """
-        pass
+        res = self.nlp(text)._.coref_resolved
+        return res

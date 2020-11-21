@@ -1,4 +1,8 @@
-../src/abstractive/*.py
-../src/abstractive/tokenizers/*.py
-../src/abstractive/abstractive_model/*.py
-../src/abstractive/extractive_attention_mask/*.py
+../tldr/abstractive/*.py
+../tldr/abstractive/tokenizers/*.py
+../tldr/abstractive/abstractive_model/*.py
+../tldr/abstractive/extractive_attention_mask/*.py
+../tldr/preprocessing/*.py
+../tldr/extractive/*.py
+../tldr/extractive/centroid/*.py
+../tldr/extractive/textrank/*.py

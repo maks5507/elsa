@@ -1,2 +1,2 @@
-# from .embeddings import FastTextWrapper
-# from .aggregated_summarizer import AggregatedSummarizer
+from .embeddings import FastTextWrapper
+from .aggregated_summarizer import AggregatedSummarizer

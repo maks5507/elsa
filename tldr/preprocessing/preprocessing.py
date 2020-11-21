@@ -1,10 +1,12 @@
 #
-# Created by
-# Eric
+# Created by Eric Spector
+#
 
+from typing import List
 import re
 from nltk.tokenize.toktok import ToktokTokenizer
-from typing import List, Tuple
+from nltk.corpus import stopwords
+import pymorphy2
 
 
 class Preprocessing:
