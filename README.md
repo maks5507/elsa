@@ -110,7 +110,7 @@ As approach we use for ELSA is language-independent, we can easily adapt it to o
 
 #### mBART checkpoint
 
-HuggingFace checkpoint: [Link]()
+HuggingFace checkpoint: [Link](https://www.icloud.com/iclouddrive/0ogqejTokfHn1tO0qiIPUldjw#mbart-checkpoint-gazeta)
 
 ## Codestyle check
 
