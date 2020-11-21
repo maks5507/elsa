@@ -1,5 +1,5 @@
 #
-# Created by mae9785 (eremeev@nyu.edu)
+# Created by Maksim Eremeev (mae9785@nyu.edu)
 #
 
 from typing import List
