@@ -1,0 +1,19 @@
+{
+  "summarization_worker": {
+    "prefix": "modules",
+    "name": "summarization_worker",
+    
+    "init_args": {
+      "elsa_params": {}
+    },
+    
+    "run_args": {
+    },
+    
+    "n_jobs": 1,
+    "add_process_num": false,
+    
+    "depends_on": [], 
+    "mode": "worker"
+  }
+}

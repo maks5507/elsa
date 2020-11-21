@@ -1,0 +1,15 @@
+{
+    "port": 22111,
+    "host": "localhost",
+    
+    "rabbitmq_host": "localhost",
+    "rabbitmq_port": 5672,
+    "rabbitmq_user": "",
+    "rabbitmq_pass": "",
+
+    "rabbitmq_queue": "",
+
+    "server_log": "server_log.txt",
+
+    "session_timeout": 3600
+}
