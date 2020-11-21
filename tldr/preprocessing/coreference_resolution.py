@@ -15,5 +15,5 @@ class CoreferenceResolution:
         """
         return: text with resolved coreferences
         """
-        res=[(ent.text,ent.label_) for ent in nlp(text).ents]
+        res = self.nlp(text)._.coref_resolved
         return res
