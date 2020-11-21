@@ -23,7 +23,7 @@ class Elsa:
         self.extractive = AggregatedSummarizer(weights, fasttext_model_path)
         self.abstractive_model = AbstractiveModel(abstractive_base_model, base_dataset)
 
-    def summarize(self, text: str, **abstractive_params) -> str:
+    def summarize(self, text: str, factor: float = 0.5, **abstractive_params) -> str:
         cf_text = self.coreference_resolution.resolve(text)
 
         sentences = self.sentence_tokenizer.tokenize(cf_text)
@@ -43,7 +43,7 @@ class Elsa:
             if i in filtered_sentences_set:
                 filtered_preprocessed_sentences += [preprocessed_sentence]
 
-        filtered_sentences_scores = self.extractive.summarize(filtered_preprocessed_sentences, factor=1)
+        filtered_sentences_scores = self.extractive.summarize(filtered_preprocessed_sentences, factor=factor)
 
         sentences_scores, cur_pointer = [], 0
         for i in range(len(sentences)):
