@@ -1,14 +1,46 @@
 <p align="center">
     <br>
-    <img src="http://maksimeremeev.com/files/elsa.png"/>
+    <img src="http://maksimeremeev.com/files/elsa.png" width=350/>
     <br>
 <p>
 
-# ELSA: Extractive Linking of Summarizarion Approaches
 
-Authors: Maksim Eremeev, Wei-Lun Huang, Eric Spector, Jeffrey Tumminia
+# ELSA: Extractive Linking of Summarization Approaches
 
-## Datasets
+Authors: Maksim Eremeev (mae9785@nyu.edu), Mars Wei-Lun Huang (wh2103@nyu.edu), Eric Spector (), Jeffrey Tumminia ()
+
+## Quick Start with ELSA
+
+```python
+from elsa import Elsa
+
+article = '''some text...
+'''
+
+abstractive_model_params = {
+    'num_beams': 10,
+    'max_length': 300,
+    'min_length': 55,
+    'no_repeat_ngram_size': 3
+}
+
+elsa = Elsa(weights=[1, 1], abstractive_base_model='bart', base_dataset='cnn', stopwords='data/stopwords.txt', 
+            fasttext_model_path='datasets/cnn/elsa-fasttext-cnn.bin', 
+            udpipe_model_path='data/english-ewt-ud-2.5-191206.udpipe')
+            
+elsa.summarize(article, **abstractive_model_params)
+```
+
+### Init Parameters
+
+- `weights`: `List[float]` -- weights for TextRank and Centroid extractive summarizations.
+- `abstractive_base_model`: `str` -- model used on the abstractive step. Either `'bart'` or `'pegasus'`.
+- `base dataset`: `str` -- dataset used to train the abstractive model. Either `'cnn'` or `'xsum'` .
+- `stopwords`: `str` -- path to the list of stopwords.
+- `fasttext_model_path`: `str` -- path to the `*.bin` checkpoint of a trained FastText model (see below for the training instructions).
+- `udpipe_model_path`: `str` -- path to the `*.udpipe` checkpoint of the pretrained UDPipe model (see `data` directory for the files).
+
+## Datasets used for experiments
 
 CNN-DailyMail: [Link](https://s3.amazonaws.com/opennmt-models/Summary/cnndm.tar.gz), original source: [Link](https://github.com/abisee/cnn-dailymail)
 
@@ -55,13 +87,30 @@ docker attach elsa-fasttext
 fasttext skipgram -input FASTTEXT_INPUT_FILE.txt -verbose 2 -minCount 5 -lr 0.05 -dim 100 -ws 5 -epoch 20 -wordNgrams 1 -minn 3 -maxn 7 -loss ns -thread 16 -neg 20 -lrUpdateRate 100 -output OUTPUT_NAME
 ```
 
-## Using ELSA
+## UDPipe models
 
-```py
-import elsa
-```
+UDPipe models avaliable for English:
 
+- UDPipe-English EWT: [Link](https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3131/english-ewt-ud-2.5-191206.udpipe?sequence=17&isAllowed=y) **(Used in our experiments, see `data` directory)**
+- UDPipe-English Patut: [Link](https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3131/english-partut-ud-2.5-191206.udpipe?sequence=29&isAllowed=y)
+- UDPipe-English Lines: [Link](https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3131/english-lines-ud-2.5-191206.udpipe?sequence=30&isAllowed=y)
+- UDPipe-English Gum: [Link](https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3131/english-gum-ud-2.5-191206.udpipe?sequence=31&isAllowed=y)
 
+Other UDPipe models: [Link](https://lindat.mff.cuni.cz/repository/xmlui/handle/11234/1-3131)
+
+## Adaptation for Russian
+
+As approach we use for ELSA is language-independent, we can easily adapt it to other languages. For Russian, we finetune mBart on the Gazeta dataset, train additional FastText model, and use UDPipe model built for Russian texts.
+
+#### UDPipe models for Russian
+
+- UDPipe-Russian Syntagrus: [Link](https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3131/russian-syntagrus-ud-2.5-191206.udpipe?sequence=70&isAllowed=y)
+- UDPipe-Russain GSD: [Link](https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3131/russian-gsd-ud-2.5-191206.udpipe?sequence=71&isAllowed=y) **(Used in our experiments, see `data` directory)**
+- UDPipe-Russian Taiga: [Link](https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3131/russian-taiga-ud-2.5-191206.udpipe?sequence=87&isAllowed=y)
+
+#### mBART checkpoint
+
+HuggingFace checkpoint: [Link]()
 
 ## Codestyle check
 
