@@ -61,12 +61,10 @@ class Util:
         return sentence_vectors
 
     @staticmethod
-    def build_fasttext_sentence_vectors(sentences: List[str], model_path: str):
-        if model_path is None:
-            raise Exception('No model path')
-        fasttext_wrapper = FastTextWrapper()
-        fasttext_wrapper.load(model_path)
-        return [fasttext_wrapper.inference(sentence) for sentence in sentences]
+    def build_fasttext_sentence_vectors(sentences: List[str], model: FastTextWrapper) -> List[np.ndarray]:
+        if model is None:
+            raise Exception('No model provided')
+        return [model.inference(sentence) for sentence in sentences]
 
     @staticmethod
     def compute_cosine_similarity(

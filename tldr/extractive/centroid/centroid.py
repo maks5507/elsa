@@ -25,7 +25,7 @@ class Centroid:
         else:
             if embedding['name'] == 'fasttext':
                 sentence_vectors = self.util.build_fasttext_sentence_vectors(
-                    sentences, embedding.get('model_path', None))
+                    sentences, embedding.get('model', None))
 
         centroid = self.util.compute_centroid(sentence_vectors)
         scores = [self.util.compute_cosine_similarity(centroid, sentence_vector)

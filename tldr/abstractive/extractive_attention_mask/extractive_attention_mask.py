@@ -16,12 +16,14 @@ class ExtractiveAttentionMask:
         mapping_tensor = torch.Tensor(mapping)
 
         for i, score in enumerate(sentences_scores):
-            mask = torch.where(mapping_tensor == i, torch.tensor(1), torch.tensor(0))
+            mask = torch.where(mapping_tensor == i, torch.tensor(1), torch.tensor(0)).to(bool)
             attention_mask[mask] = score
 
-        mask = torch.where(mapping_tensor == -1, torch.tensor(1), torch.tensor(0))
-        attention_mask[mask] = torch.mean(torch.Tensor(sentences_scores))
+        mask = torch.where(mapping_tensor == -1, torch.tensor(1), torch.tensor(0)).to(bool)
+        attention_mask[mask] = 0.
 
         attention_mask = F.softmax(attention_mask, dim=-1)
+
+        #attention_mask /= attention_mask.sum()
 
         return attention_mask.unsqueeze(0)

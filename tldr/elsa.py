@@ -12,14 +12,16 @@ from .abstractive import AbstractiveModel
 
 
 class Elsa:
-    def __init__(self, weights: List[float]):
-        self.preprocessing = Preprocessing(stopwords='../data/stopwords.txt')
-        self.udpipe_tokenizer = UDPipeTokenizer()
-        #self.sentence_tokenizer = SentenceTokenizer()
+    def __init__(self, weights: List[float] = [1, 1], abstractive_base_model: str = 'bart', base_dataset: str = 'cnn',
+                 stopwords: str = '../data/stopwords.txt', fasttext_model_path: str = 'datasets/cnn/elsa-fasttext-cnn.bin',
+                 udpipe_model_path:s str = '../data/eng.udpipe'):
+        self.preprocessing = Preprocessing(stopwords=stopwords)
+        self.udpipe_tokenizer = UDPipeTokenizer(udpipe)
+        self.sentence_tokenizer = SentenceTokenizer()
         self.sentence_filtering = SentenceFiltering()
         self.coreference_resolution = CoreferenceResolution()
-        self.extractive = AggregatedSummarizer(weights)
-        self.abstractive_model = AbstractiveModel()
+        self.extractive = AggregatedSummarizer(weights, fasttext_model_path)
+        self.abstractive_model = AbstractiveModel(abstractive_base_model, base_dataset)
 
     def summarize(self, text: str, factor: float) -> str:
         cf_text = self.coreference_resolution.resolve(text)
@@ -42,7 +44,7 @@ class Elsa:
 
         selected_sentences = self.extractive.summarize(filtered_preprocessed_sentences, factor)
         attention_mask = self.attention_maks.generate(filtered_preprocessed_sentences, selected_sentences)
-        summary = self.abstractive_model.summarize(filtered_preprocessed_sentences, attention_mask)
+        summary = self.abstractive_model(filtered_preprocessed_sentences, attention_mask)
 
         return summary
 
