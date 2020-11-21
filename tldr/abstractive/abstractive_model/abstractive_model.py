@@ -47,7 +47,9 @@ class AbstractiveModel:
         self.tokenizer = self.setup_mapping[self.base_model_name]['tokenizer']()
 
         self.base_model_class = self.setup_mapping[self.base_model_name]['base_model']
-        self.base_model = self.base_model_class.from_pretrained(self.datasets_mapping[self.base_model_name][self.dataset])
+        self.base_model = self.base_model_class.from_pretrained(
+            self.datasets_mapping[self.base_model_name][self.dataset]
+        )
 
         self.extractive_attention_mask = ExtractiveAttentionMask()
 

@@ -7,8 +7,6 @@ from .textrank import Textrank
 from .centroid import Centroid
 from .embeddings import FastTextWrapper
 
-import numpy as np
-
 
 class AggregatedSummarizer:
     def __init__(self, weights: List[float], fasttext_model_path: str):
@@ -34,4 +32,3 @@ class AggregatedSummarizer:
             for sentence_id, score in selected_sentences:
                 scores[sentence_id] += self.weights[summarizer] * score
         return scores
-

@@ -24,6 +24,4 @@ class ExtractiveAttentionMask:
 
         attention_mask = F.softmax(attention_mask, dim=-1)
 
-        #attention_mask /= attention_mask.sum()
-
         return attention_mask.unsqueeze(0)

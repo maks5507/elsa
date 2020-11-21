@@ -1,5 +1,5 @@
 #
-# Created by
+# Created by Eric Spector
 #
 
 import neuralcoref
