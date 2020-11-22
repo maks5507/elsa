@@ -1,6 +1,6 @@
 {
   "summarization_worker": {
-    "prefix": "modules",
+    "prefix": "../modules",
     "name": "summarization_worker",
     
     "init_args": {
