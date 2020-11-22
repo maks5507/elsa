@@ -1,13 +1,13 @@
 {
-    "port": 22111,
+    "port": 22555,
     "host": "localhost",
     
     "rabbitmq_host": "localhost",
     "rabbitmq_port": 5672,
-    "rabbitmq_user": "",
-    "rabbitmq_pass": "",
+    "rabbitmq_user": "admin",
+    "rabbitmq_pass": "admin1",
 
-    "rabbitmq_queue": "",
+    "rabbitmq_queue": "elsa",
 
     "server_log": "server_log.txt",
 

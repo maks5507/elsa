@@ -2,7 +2,7 @@
 # Created by Maksim Eremeev (mae9785@nyu.edu)
 #
 
-from .. import rmq_interface
+import rmq_interface
 import msgpack
 
 
@@ -21,6 +21,7 @@ class Worker:
         params = {key.decode(): value for key, value in params.items()}
 
         result = self.action(**params)
+        print(result)
 
         result = msgpack.packb(result)
         return result

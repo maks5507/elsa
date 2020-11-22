@@ -22,7 +22,7 @@
       $(document).ready(function(){
         let starting_height = $("#textarea1").height();
 
-        let type = 'lexical-distance';
+        let type = 'elsa-bart-cnn';
 
         $("#textarea1").keyup(function () {
           console.log(Math.max(this.scrollHeight, starting_height));
@@ -42,7 +42,7 @@
         $("#submit").click(function() {
           let data = {};
           data['text'] = $("#textarea").val();
-          data['type'] = type;
+          data['elsa_id'] = type;
 
           $.ajax({
             type: "POST",

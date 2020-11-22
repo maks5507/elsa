@@ -9,8 +9,8 @@ import multiprocessing
 from twisted.logger import Logger, textFileLogObserver
 import importlib
 
-from .worker import Worker
-from .processor import Processor
+from worker import Worker
+from processor import Processor
 
 
 class Launcher:

@@ -3,7 +3,7 @@
 #
 
 
-from demo.launcher import Launcher
+from launcher import Launcher
 import argparse
 
 
