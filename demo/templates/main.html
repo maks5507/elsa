@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="http://maksimeremeev.com/files/css/styles.css">
   <link rel="stylesheet" href="http://maksimeremeev.com/files/css/skeleton.css">
 
+  <link rel="shortcut icon" href="http://maksimeremeev.com/files/elsa-favicon.ico" />
+
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -42,11 +44,13 @@
           for model_name in models %
         }
         $('#{{ model_name }}-li').removeClass('active'); {
-          % endfor %
+          %
+          endfor %
         }
         $('#' + type + '-li').addClass('active');
       }); {
-        % endfor %
+        %
+        endfor %
       }
 
       $("#submit").click(function() {
@@ -79,7 +83,7 @@
     <nav>
       <div class='container'>
         <div>
-          <h2>Exatrctive Linking of Summarization Approaches</h2> <br>
+          <h2>ELSA: Extractive Linking of Summarization Approaches</h2> <br>
         </div>
 
         <div class='eleven columns'>
@@ -90,53 +94,60 @@
     </nav>
   </header>
 
-  <div class='container-fluid focus'>
-    <div class="row p-4">
-      <div class='col-4 margin-top-30'>
-        <img src='http://maksimeremeev.com/files/img/lang.png' height="64" width="64">
-        <h4><strong>ELSA</strong></h4>
-        <p></p>
-      </div>
-      <div class='col-4 margin-top-30'>
-        <img src='http://maksimeremeev.com/files/img/model.png' height="64" width="64">
-        <h4><strong>Aggregating Extractive Approaches</strong></h4>
-        <p></p>
-      </div>
-      <div class='col-4 margin-top-30'>
-        <img src='http://maksimeremeev.com/files/img/marker.png' height="64" width="64">
-        <h4><strong>Extractive Attention Masking</strong></h4>
-        <p></p>
+  <div class='custom-container'>
+    <div class='container-fluid body'>
+      <div class="row p-4">
+        <div class='col-4 margin-top-30'>
+          <img src='http://maksimeremeev.com/files/elsa-snowflake.png' height="82" width="116">
+          <h4><strong>ELSA</strong></h4>
+          <p>Test</p>
+        </div>
+        <div class='col-4 margin-top-30'>
+          <img src='http://maksimeremeev.com/files/elsa-snowflake.png' height="82" width="116">
+          <h4><strong>Extractive Approaches</strong></h4>
+          <p>Test</p>
+        </div>
+        <div class='col-4 margin-top-30'>
+          <img src='http://maksimeremeev.com/files/elsa-snowflake.png' height="82" width="116">
+          <h4><strong>Attention Masking</strong></h4>
+          <p>Test</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="container-fluid">
-    <ul class="pagination p-4 pull-left">
-      {% for model_name in models %}
-      <li class="page-item" id="{{ model_name }}-li"><input type="button" class="page-link" id="{{ model_name }}" value="{{ model_values[model_name] }}"></li>
-      {% endfor %}
-      <li class="page-item ml-5"><input type="button" id="submit" style="color: white;" class="form-control bg bg-success" value="Estimate"></li>
-    </ul>
-    <div class="row p-4">
-      <div class="col-6">
-        <span><strong>Insert your text:</strong></span>
-        <textarea class="form-control" id="textarea" rows="20">{{ text }}</textarea>
-      </div>
-      <div class="col-6">
-        <span><strong>Receive the result:</strong></span>
-        <div id="result"></div>
-        <img src='http://maksimeremeev.com/files/elsa-loader.gif' />
-        <div>
+  <div class='custom-container'>
+    <div class="container-fluid">
+      <ul class="pagination p-4 pull-left">
+        {% for model_name in models %}
+        <li class="page-item" id="{{ model_name }}-li"><input type="button" class="page-link" id="{{ model_name }}" value="{{ model_values[model_name] }}"></li>
+        {% endfor %}
+        <li class="page-item ml-5"><input type="button" id="submit" style="color: white;" class="form-control bg bg-success" value="Summarize"></li>
+      </ul>
+      <div class="row">
+        <div class="col-6">
+          <span><strong>Insert your text:</strong></span>
+          <textarea class="form-control" id="textarea" rows="20">{{ text }}</textarea>
+        </div>
+        <div class="col-6">
+          <span><strong>Receive the result:</strong></span>
+          <div id="result"></div>
+          <img src='http://maksimeremeev.com/files/elsa-loader.gif' id='loader' />
+          <div>
+          </div>
         </div>
       </div>
+      <div class="hr">&nbsp;</div>
       <footer>
-        <div class='container'>
-          <div class='eight columns'>
-            <h5>© ELSA: Extractive Linking of Summarization Approaches 2020</h5>
-            <h6>Powered By Maksim Eremeev, Mars Wei-Lun Huang, Jeffrey Tumminia, Eric Spector</h6>
-          </div>
-          <div class='seven columns'>
-            <h5>Contact Us:</h5>
+        <div class='custom-container'>
+          <div class='row'>
+            <div class='col-5 ml-5'>
+              <h5>ELSA: Extractive Linking of Summarization Approaches 2020</h5>
+              <h6>Powered By Maksim Eremeev, Mars Wei-Lun Huang, Jeffrey Tumminia, Eric Spector</h6>
+            </div>
+            <div class='col-6'>
+              <h5>Contact Us:</h5>
+            </div>
           </div>
         </div>
       </footer>
