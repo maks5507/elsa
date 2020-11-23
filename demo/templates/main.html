@@ -24,6 +24,8 @@
 
         let type = 'elsa-bart-cnn';
 
+        $('#loader').fadeOut(0);
+
         $("#textarea1").keyup(function () {
           console.log(Math.max(this.scrollHeight, starting_height));
           this.style.height = Math.max(this.scrollHeight, starting_height) + 'px';
@@ -44,11 +46,16 @@
           data['text'] = $("#textarea").val();
           data['elsa_id'] = type;
 
+          $('#loader').fadeIn(10);
+
           $.ajax({
             type: "POST",
             url: "/api/v1/run",
             data: JSON.stringify(data),
             success: function(result) {
+              $('#loader').fadeOut(0);
+
+              result = JSON.parse(result)['data'];
               $('#result').html(result);
             }
           });
@@ -109,19 +116,20 @@
       </div>
       <div class="col-6">
         <span><strong>Receive the result:</strong></span>
-	<div id="result"></div>
+          <div id="result"></div>
+          <img src='http://maksimeremeev.com/files/elsa-loader.gif' />
       <div>
     </div>
 </div>
 <footer>
     <div class='container'>
        <div class='eight columns'>
-           <h5>© Quantile-Based Text Complexity Estimation 2020</h5>
-	   <h6>Powered By Maksim Eremeev & Konstantin Vorontsov</h6>
+           <h5>© ELSA: Extractive Linking of Summarization Approaches 2020</h5>
+	         <h6>Powered By Maksim Eremeev, Mars Wei-Lun Huang, Jeffrey Tumminia, Eric Spector</h6>
        </div>
        <div class='seven columns'>
            <h5>Contact Us:</h5>
-	   <p>E-mail: <a href='mailto:maks5507@yandex.ru'>Head of Developement</a></p>
+
        </div>
      </div>
 </footer>
