@@ -7,9 +7,13 @@ import setuptools.command.build_py as build_py
 
 
 setup_kwargs = dict(
-    name='tldr',
+    name='elsa',
     version='0.0.1',
-    packages=find_packages(),
+    packages=['tldr', 'tldr.preprocessing', 'tldr.abstractive',
+              'tldr.abstractive.abstractive_model', 'tldr.abstractive.base_models', 
+              'tldr.abstractive.extractive_attention_mask', 'tldr.abstractive.tokenizers', 
+              'tldr.extractive', 'tldr.extractive.centroid', 'tldr.extractive.textrank', 
+              'tldr.extractive.embeddings', 'tldr.extractive.util'],
     install_requires=[
         'numpy',
         'nltk',
