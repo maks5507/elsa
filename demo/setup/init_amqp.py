@@ -14,13 +14,15 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--connect', nargs='*', help='queue name for summarization worker')
     args = parser.parse_args()
 
-    interface = RabbitMQInterface(url_params=args.connect[0])
+    print(args.demo_queue)
 
-    interface.__create_queue(name=args.renderer_queue[0],
-                             exchange_to_bind='amq.topic',
-                             binding_routing_key=args.renderer_queue[0])
+    interface = RabbitMQInterface(url_parameters=args.connect[0])
 
-    interface.__create_queue(name=args.demo_queue[0],
-                             exchange_to_bind='amq.topic',
-                             binding_routing_key=args.demo_queue[0])
+    interface.create_queue(name=args.renderer_queue[0],
+                           exchnage_to_bind='amq.topic',
+                           binding_routing_key=args.renderer_queue[0])
+
+    interface.create_queue(name=args.demo_queue[0],
+                           exchnage_to_bind='amq.topic',
+                           binding_routing_key=args.demo_queue[0])
 
