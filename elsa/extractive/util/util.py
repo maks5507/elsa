@@ -80,9 +80,11 @@ class Util:
         if isinstance(sentence_vector, sp_sp.spmatrix) and \
                 isinstance(sentence_vector2, sp_sp.spmatrix):
             score = score.todense()[0, 0]
-            score /= (sp_norm(sentence_vector) * sp_norm(sentence_vector2))
+            nrm, nrm2 = sp_norm(sentence_vector), sp_norm(sentence_vector2)
+            score = score / ( nrm * nrm2 ) if nrm * nrm2 > 0 else 0
         else:
-            score /= (norm(sentence_vector) * norm(sentence_vector2))
+            nrm, nrm2 = norm(sentence_vector), norm(sentence_vector2)
+            score = score / ( nrm * nrm2 ) if nrm * nrm2 > 0 else 0
         return score
 
     @staticmethod
