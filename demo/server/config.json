@@ -4,10 +4,8 @@
     
     "rabbitmq_host": "localhost",
     "rabbitmq_port": 5672,
-    "rabbitmq_user": "admin",
-    "rabbitmq_pass": "admin1",
-
-    "rabbitmq_queue": "elsa",
+    "rabbitmq_user": "",
+    "rabbitmq_pass": "",
 
     "server_log": "server_log.txt",
 
