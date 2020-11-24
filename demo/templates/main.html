@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>ELSA | Extractive Linking of Summarization Approaches</title>
+
+  <!-- Google fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Oswald:300,400' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="http://maksimeremeev.com/files/css/reset.css">
+  <link rel="stylesheet" href="http://maksimeremeev.com/files/css/styles.css">
+  <link rel="stylesheet" href="http://maksimeremeev.com/files/css/skeleton.css">
+
+  <link rel="shortcut icon" href="http://maksimeremeev.com/files/elsa-favicon.ico" />
+
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      let starting_height = $("#textarea1").height();
+
+      let type = 'elsa-bart-cnn';
+
+      $('#loader').fadeOut(0);
+
+      $("#textarea1").keyup(function() {
+        console.log(Math.max(this.scrollHeight, starting_height));
+        this.style.height = Math.max(this.scrollHeight, starting_height) + 'px';
+      });
+
+      {
+        %
+        for model_name in models %
+      }
+      $("#{{ model_name }}").click(function() {
+        type = '{{ model_name }}'; {
+          %
+          for model_name in models %
+        }
+        $('#{{ model_name }}-li').removeClass('active'); {
+          %
+          endfor %
+        }
+        $('#' + type + '-li').addClass('active');
+      }); {
+        %
+        endfor %
+      }
+
+      $("#submit").click(function() {
+        let data = {};
+        data['text'] = $("#textarea").val();
+        data['elsa_id'] = type;
+
+        $('#loader').fadeIn(10);
+
+        $.ajax({
+          type: "POST",
+          url: "/api/v1/run",
+          data: JSON.stringify(data),
+          success: function(result) {
+            $('#loader').fadeOut(0);
+
+            result = JSON.parse(result)['data'];
+            $('#result').html(result);
+          }
+        });
+        return false;
+      });
+    });
+  </script>
+</head>
+
+<body>
+
+  <header>
+    <nav>
+      <div class='container'>
+        <div>
+          <h2>ELSA: Extractive Linking of Summarization Approaches</h2> <br>
+        </div>
+
+        <div class='eleven columns'>
+          <ul class='mainMenu'>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class='custom-container'>
+    <div class='container-fluid body'>
+      <div class="row p-4">
+        <div class='col-4 margin-top-30'>
+          <img src='http://maksimeremeev.com/files/elsa-snowflake.png' height="82" width="116">
+          <h4><strong>ELSA</strong></h4>
+          <p>Test</p>
+        </div>
+        <div class='col-4 margin-top-30'>
+          <img src='http://maksimeremeev.com/files/elsa-snowflake.png' height="82" width="116">
+          <h4><strong>Extractive Approaches</strong></h4>
+          <p>Test</p>
+        </div>
+        <div class='col-4 margin-top-30'>
+          <img src='http://maksimeremeev.com/files/elsa-snowflake.png' height="82" width="116">
+          <h4><strong>Attention Masking</strong></h4>
+          <p>Test</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='custom-container'>
+    <div class="container-fluid">
+      <ul class="pagination p-4 pull-left">
+        {% for model_name in models %}
+        <li class="page-item" id="{{ model_name }}-li"><input type="button" class="page-link" id="{{ model_name }}" value="{{ model_values[model_name] }}"></li>
+        {% endfor %}
+        <li class="page-item ml-5"><input type="button" id="submit" style="color: white;" class="form-control bg bg-success" value="Summarize"></li>
+      </ul>
+      <div class="row">
+        <div class="col-6">
+          <span><strong>Insert your text:</strong></span>
+          <textarea class="form-control" id="textarea" rows="20">{{ text }}</textarea>
+        </div>
+        <div class="col-6">
+          <span><strong>Receive the result:</strong></span>
+          <div id="result"></div>
+          <img src='http://maksimeremeev.com/files/elsa-loader.gif' id='loader' />
+          <div>
+          </div>
+        </div>
+      </div>
+      <div class="hr">&nbsp;</div>
+      <footer>
+        <div class='custom-container'>
+          <div class='row'>
+            <div class='col-5 ml-5'>
+              <h5>ELSA: Extractive Linking of Summarization Approaches 2020</h5>
+              <h6>Powered By Maksim Eremeev, Mars Wei-Lun Huang, Jeffrey Tumminia, Eric Spector</h6>
+            </div>
+            <div class='col-6'>
+              <h5>Contact Us:</h5>
+            </div>
+          </div>
+        </div>
+      </footer>
+</body>

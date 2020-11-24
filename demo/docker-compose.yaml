@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  elsa-demo:
+    build:
+      context: .
+      args:
+        - renderer_queue=elsa
+        - demo_queue=elsa-demo
+        - rmq_connect=amqp://admin:admin1@localhost:5672
+      network: host
+    command: "python /root/server/server.py -c /root/server/config.json"
+    container_name: elsa-demo
+    network_mode: host
+    restart: always
+    volumes: 
+      - ".:/root/" 
