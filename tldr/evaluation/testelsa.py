@@ -1,12 +1,23 @@
-# Author: Jeff T
-
 import sys
 sys.path.append("/mnt/c/Fall2020/NLP/Project/tldr-project/tldr")
 
-save=True
-from nltk.tokenize import sent_tokenize
+from extractive import AggregatedSummarizer
+from preprocessing import Preprocessing, UDPipeTokenizer, SentenceTokenizer, \
+    SentenceFiltering, CoreferenceResolution
 from abstractive import AbstractiveModel
-from rouge_score import rouge_scorer
+
+generate_summ=False
+stopwords = '../data/stopwords.txt'
+udpipe_model_path= '../data/english-ewt-ud-2.5-191206.udpipe'
+fasttext_model_path= '../data/cnn/elsa-fasttext-cnn.bin' #saved down manually
+
+updipe = UDPipeTokenizer(udpipe_model_path)
+Prep = Preprocessing(stopwords=stopwords)
+abs_mod = AbstractiveModel('bart', 'cnn')
+
+weights = (1.,1.)
+Agsum = AggregatedSummarizer(weights, fasttext_model_path)
+
 
 text = '''
 (CNN)Legal experts have been saying for a week now that President Donald Trump's court cases to throw out ballots and turn around his election loss were bound to fail.
@@ -23,32 +34,49 @@ On top of it all, a law firm leading the most broad challenge in Pennsylvania --
 And yet, lawyers representing, Republicans and voters unhappy with the election's result forge ahead, as part of an increasingly desperate long-shot attempt to swing the Electoral College in Trump's favor, no matter the popular vote and electoral count victory for Biden.
 '''
 
-sentences = sent_tokenize(text)
-sentences_scores = [1] * len(sentences)
+print("definitions made")
+cf_text = CoreferenceResolution().resolve(text=text)
+print("coref complete")
+sentences = SentenceTokenizer().tokenize(cf_text)
+print("tokenizer complete")
+preprocessed_sentences = []
+udpipe_tokens = []
 
-model = AbstractiveModel('bart', 'cnn')
+print("start preproc")
+for sentence in sentences:
+    preprocessed_sentences += [Prep.preproc(sentence)]
+    udpipe_tokens += [udpipe.tokenize(sentence)]
 
-base_model_params = {
-    'num_beams': 10,
-    'max_length': 1000,
-    'min_length': 55,
-    'no_repeat_ngram_size': 3
-}
+print("end preproc/start filter")
 
-summ = model(sentences, sentences_scores, **base_model_params)
+filtered_sentences = SentenceFiltering().filter(udpipe_tokens)
+filtered_sentences_set = set(filtered_sentences)
 
-scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True) 
-scores = scorer.score(text, summ)
+filtered_preprocessed_sentences = []
+for i, preprocessed_sentence in enumerate(preprocessed_sentences):
+    if i in filtered_sentences_set:
+        filtered_preprocessed_sentences += [preprocessed_sentence]
 
-print("Sample Article Processed")
-print(summ)
-print('\n', '-'*25, '\n')
-print(scores)
+print("end filter/Agsum")
+filtered_sentences_scores = Agsum.summarize(filtered_preprocessed_sentences, factor=.5)
 
-if save:
-    text_file = open("samplesummary.txt", "w")
-    n = text_file.write(summ)
+print("extractive complete")
+print(type(filtered_sentences_scores))
+print(len(filtered_sentences_scores))
+
+if generate_summ:
+    sentences_scores, cur_pointer = [], 0
+    for i in range(len(sentences)):
+        if i in filtered_sentences_set:
+            sentences_scores += [filtered_sentences_scores[cur_pointer]]
+            cur_pointer += 1
+        else:
+            sentences_scores += [0]
+
+    summary = self.abstractive_model(sentences, sentences_scores, **abstractive_params)
+
+    text_file = open("summ.txt", "w")
+    n = text_file.write(summary)
     text_file.close()
-    print("summary saved")
-
+    print("summary Saved")
 

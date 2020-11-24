@@ -1,6 +1,6 @@
 from rouge_score import rouge_scorer
 
-article = '''
+text = '''
 (CNN)Legal experts have been saying for a week now that President Donald Trump's court cases to throw out ballots and turn around his election loss were bound to fail.
 
 Throughout Friday, the failures piled up.
@@ -19,9 +19,7 @@ with open ("summ.txt", "r") as myfile:
     summ=myfile.readlines()
 
 scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True) 
-scores = scorer.score(article, summ[0])
+scores = scorer.score(text, summ[0])
 
-
-print(summ[0])
 print("---\n")
 print(scores)
