@@ -6,12 +6,12 @@ from preprocessing import Preprocessing, UDPipeTokenizer, SentenceTokenizer, \
     SentenceFiltering, CoreferenceResolution
 from abstractive import AbstractiveModel
 
-generate_summ=False
+generate_summ=True
 stopwords = '../data/stopwords.txt'
 udpipe_model_path= '../data/english-ewt-ud-2.5-191206.udpipe'
 fasttext_model_path= '../data/cnn/elsa-fasttext-cnn.bin' #saved down manually
 
-updipe = UDPipeTokenizer(udpipe_model_path)
+udpipe = UDPipeTokenizer(udpipe_model_path)
 Prep = Preprocessing(stopwords=stopwords)
 abs_mod = AbstractiveModel('bart', 'cnn')
 
@@ -73,7 +73,7 @@ if generate_summ:
         else:
             sentences_scores += [0]
 
-    summary = self.abstractive_model(sentences, sentences_scores, **abstractive_params)
+    summary = abs_mod(sentences, sentences_scores)
 
     text_file = open("summ.txt", "w")
     n = text_file.write(summary)
