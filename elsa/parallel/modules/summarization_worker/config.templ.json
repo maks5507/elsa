@@ -1,0 +1,30 @@
+{
+  "summarization_worker": {
+    "mask": "$MASK",
+    "texts": "$TEXT_FOLDER",
+    "prefix": "elsa.parallel.modules",
+    "name": "summarization_worker",
+
+    "init_args": {
+        "weights": "[$EXTRACTIVE_WEIGHT, $ABSTRACTIVE_WEIGHT]",
+        "abstractive_base_model": "$ABSTRACTIVE_BASE_MODEL",
+        "base_dataset": "$DATASET_NAME",
+        "stopwords": "$STOPWORDS_PATH",
+        "fasttext_model_path": "$FASTTEXT_MODEL_PATH", 
+        "udpipe_model_path": "$UDPIPE_MODEL_PATH"
+    },
+    
+    "run_args": {
+        "num_beams": "$NUM_BEAMS",
+        "max_length": "$MAX_LENGTH",
+        "min_length": "$MIN_LENGTH",
+        "no_repeat_ngram_size": "$NO_REPEAT_NGRAM_SIZE$"
+    },
+    
+    "n_jobs": "$NUM_JOBS",
+    "add_process_num": false,
+    
+    "depends_on": [], 
+    "mode": "processor"
+  }
+}

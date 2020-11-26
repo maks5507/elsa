@@ -2,7 +2,7 @@
 # Created by Maksim Eremeev (mae9785@nyu.edu)
 #
 
-from ..tldr import Preprocessing
+from ..elsa import Preprocessing
 from tqdm.auto import tqdm
 from pathlib import Path
 import json

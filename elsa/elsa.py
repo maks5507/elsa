@@ -44,7 +44,6 @@ class Elsa:
                 filtered_preprocessed_sentences += [preprocessed_sentence]
 
         filtered_sentences_scores = self.extractive.summarize(filtered_preprocessed_sentences, factor=factor)
-
         sentences_scores, cur_pointer = [], 0
         for i in range(len(sentences)):
             if i in filtered_sentences_set:

@@ -59,8 +59,6 @@ class AbstractiveModel:
         """
         tokenized_sequence, mapping = self.tokenizer.tokenize(sentences)
         attention_mask = self.extractive_attention_mask(mapping, sentence_scores)
-
         summary = self.base_model.generate(input_ids=tokenized_sequence, attention_mask=attention_mask,
                                            decoder_start_token_id=self.tokenizer.bos_token_id, **base_model_params)
-
         return self.tokenizer.decode(summary)
