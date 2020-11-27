@@ -2,8 +2,8 @@
 # Created by Maksim Eremeev (mae9785@nyu.edu)
 #
 
-from tldr import Elsa
-from . import noexcept
+from elsa import Elsa
+from .. import noexcept
 import json
 
 

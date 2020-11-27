@@ -2,25 +2,29 @@
 # Created by Maksim Eremeev (mae9785@nyu.edu)
 #
 
-import traceback
+from elsa import Elsa
+from pathlib import Path
+from worker_compose import noexcept
 
-from .. import Elsa
-from .. import noexcept
 
-
-class SummarizationWorker:
-    def __init__(self, log, **elsa_params):
+class InferenceProcessor:
+    def __init__(self, log, save_path, **elsa_params):
         self.log = log
+        self.save_path = save_path
         self.elsa = Elsa(**elsa_params)
 
-    @noexcept(default_value={"data": [], "errors": []})
+    @noexcept(default_value=None)
     def run(self, path, **abstractive_model_params):
         try:
             with open(path, 'r') as f:
                 user_text = f.read()
+
+            basename = str(Path(path).stem)
             summary = self.elsa.summarize(user_text, **abstractive_model_params)
             self.log.info(f'Summary for input {user_text}: {summary}')
-            return {'data': [summary], 'errors': []}
+
+            with open(f'{self.save_path}/{basename}.summary', 'w') as f:
+                f.write(summary)
+
         except Exception:
             self.log.failure('')
-            return {'data': [], 'errors': [traceback.format_exc()]}
