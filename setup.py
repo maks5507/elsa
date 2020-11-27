@@ -10,7 +10,7 @@ setup_kwargs = dict(
     name='elsa',
     version='0.0.1',
     packages=['elsa', 'elsa.preprocessing', 'elsa.abstractive',
-              'elsa.abstractive.abstractive_model', 'wlsa.abstractive.base_models',
+              'elsa.abstractive.abstractive_model', 'elsa.abstractive.base_models',
               'elsa.abstractive.extractive_attention_mask', 'elsa.abstractive.tokenizers',
               'elsa.extractive', 'elsa.extractive.centroid', 'elsa.extractive.textrank',
               'elsa.extractive.embeddings', 'elsa.extractive.util'],

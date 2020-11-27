@@ -4,27 +4,33 @@
 
 from elsa import Elsa
 from pathlib import Path
+import os
+
 from worker_compose import noexcept
 
 
 class InferenceProcessor:
-    def __init__(self, log, save_path, **elsa_params):
+    def __init__(self, log, save_path, elsa_params):
         self.log = log
         self.save_path = save_path
         self.elsa = Elsa(**elsa_params)
 
     @noexcept(default_value=None)
-    def run(self, path, **abstractive_model_params):
-        try:
-            with open(path, 'r') as f:
-                user_text = f.read()
+    def run(self, path, model_params):
+        with open(path, 'r') as f:
+            user_text = f.read()
 
-            basename = str(Path(path).stem)
-            summary = self.elsa.summarize(user_text, **abstractive_model_params)
-            self.log.info(f'Summary for input {user_text}: {summary}')
+        self.log.info(f'{path}')
+        basename = str(Path(path).stem)
 
-            with open(f'{self.save_path}/{basename}.summary', 'w') as f:
-                f.write(summary)
+        output_path = f'{self.save_path}/{basename}.summary'
 
-        except Exception:
-            self.log.failure('')
+        if os.path.exists(output_path):
+            return
+
+        summary = self.elsa.summarize(user_text, **model_params)
+        self.log.info(f'Summary for input {basename}: {summary}')
+
+        with open(output_path, 'w') as f:
+            f.write(summary)
+

@@ -38,7 +38,7 @@ class BaseTokenizerWithMapping:
         tokenized_sequence_tensor = torch.cat([self.starting_tokens_ids, tokenized_sequence_tensor,
                                               self.ending_tokens_ids])
 
-        return tokenized_sequence_tensor.unsqueeze(0), mapping
+        return tokenized_sequence_tensor[:512].unsqueeze(0), mapping[:512]
 
     def decode(self, summary: torch.Tensor) -> str:
         return self.main_tokenizer.batch_decode(summary, skip_special_tokens=True)[0]

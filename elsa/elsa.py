@@ -23,7 +23,8 @@ class Elsa:
         self.extractive = AggregatedSummarizer(weights, fasttext_model_path)
         self.abstractive_model = AbstractiveModel(abstractive_base_model, base_dataset)
 
-    def summarize(self, text: str, factor: float = 0.5, **abstractive_params) -> str:
+    def summarize(self, text: str, factor: float = 0.5, use_stem: bool = False, use_lemm: bool = False, 
+                  check_stopwords: bool = True, check_length: bool = True, **abstractive_params) -> str:
         cf_text = self.coreference_resolution.resolve(text)
 
         sentences = self.sentence_tokenizer.tokenize(cf_text)
@@ -32,7 +33,8 @@ class Elsa:
         udpipe_tokens = []
 
         for sentence in sentences:
-            preprocessed_sentences += [self.preprocessing.preproc(sentence)]
+            preprocessed_sentences += [self.preprocessing.preproc(sentence, use_stem=use_stem, use_lemm=use_lemm, 
+                                                                  check_stopwords=check_stopwords, check_length=check_length)]
             udpipe_tokens += [self.udpipe_tokenizer.tokenize(sentence)]
 
         filtered_sentences = self.sentence_filtering.filter(udpipe_tokens)
