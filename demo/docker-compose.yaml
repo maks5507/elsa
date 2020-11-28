@@ -9,9 +9,9 @@ services:
         - demo_queue=elsa-demo
         - rmq_connect=amqp://admin:admin1@localhost:5672
       network: host
-    command: "python /root/server/server.py -c /root/server/config.json"
+    command: "python /root/server/server.py -c /root/server/config.json && python /root/run.py -c /root/config.json"
     container_name: elsa-demo
     network_mode: host
     restart: always
-    volumes: 
-      - ".:/root/" 
+    volumes:
+      - ".:/root/"

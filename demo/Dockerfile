@@ -7,7 +7,7 @@ ARG rmq_connect
 RUN apt update; apt install vim procps build-essential git -y;
 
 RUN git clone https://github.com/maks5507/amqp-interface.git; cd amqp-interface; python setup.py build; pip install .;
-##RUN git clone https://github.com/maks5507/elsa.git; cd elsa; python setup.py build; pip install .;
+RUN git clone https://github.com/maks5507/elsa.git; cd elsa; python setup.py build; pip install .;
 
 RUN export OMP_NUM_THREADS=1
 
