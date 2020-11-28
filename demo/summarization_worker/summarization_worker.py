@@ -3,7 +3,7 @@
 #
 
 from elsa import Elsa
-from .. import noexcept
+from worker_compose import noexcept
 import json
 
 
@@ -17,7 +17,7 @@ class SummarizationWorker:
             self.elsas[elsa_id] = Elsa(**elsa_params)
 
     @noexcept(default_value='{"data": [], "errors": []}')
-    def run(self, text, elsa_id):
+    def run(self, text, elsa_id, type):
         elsa_id = elsa_id.decode()
         text = text.decode()
         summary = self.elsas[elsa_id].summarize(text)

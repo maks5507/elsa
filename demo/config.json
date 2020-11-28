@@ -1,0 +1,63 @@
+{
+  "summarization_worker": {
+    "prefix": "./summarization_worker/summarization_worker.py",
+    "name": "summarization_worker",
+    
+    "init_args": {
+      "list_elsa_params": {
+        "elsa-bart-cnn": {
+	  "weights": [1, 1],
+          "abstractive_base_model": "bart",
+          "base_dataset": "cnn",
+          "stopwords": "../data/stopwords.txt",
+          "fasttext_model_path": "../datasets/cnn/elsa-fasttext-cnn.bin",
+          "udpipe_model_path": "../data/english-ewt-ud-2.5-191206.udpipe"
+	},
+	"elsa-bart-xsum": {
+	  "weights": [1, 1],
+          "abstractive_base_model": "bart",
+          "base_dataset": "xsum",
+          "stopwords": "../data/stopwords.txt",
+          "fasttext_model_path": "../datasets/xsum/fasttext-xsum.bin",
+          "udpipe_model_path": "../data/english-ewt-ud-2.5-191206.udpipe"
+	}
+      }
+    },
+    
+    "run_args": {
+      "rmq_connect": "amqp://guest:guest@localhost:5672",
+      "rmq_queue": "elsa-summarization"
+    },
+    
+    "n_jobs": 1,
+    "add_process_num": false,
+    
+    "depends_on": [], 
+    "mode": "worker"
+  },
+
+  "renderer_worker": {
+    "prefix": "./renderer_worker/renderer_worker.py",
+    "name": "renderer_worker",
+
+    "init_args": {
+      "main_template_path": "./templates/main.html",
+      "models": ["elsa-bart-cnn", "elsa-bart-xsum"],
+      "models_values": {
+        "elsa-bart-cnn": "ELSA-BART-CNN",
+	"elsa-bart-xsum": "ELSA-BART-XSUM"
+      }
+    },
+
+    "run_args": {
+      "rmq_connect": "amqp://guest:guest@localhost:5672",
+      "rmq_queue": "elsa-demo"
+    },
+
+    "n_jobs": 1,
+    "add_process_num": false,
+
+    "depends_on": [],
+    "mode": "worker"
+  }
+}

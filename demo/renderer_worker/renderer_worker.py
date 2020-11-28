@@ -3,7 +3,7 @@
 #
 
 import jinja2
-from .. import noexcept
+from worker_compose import noexcept
 
 
 class RendererWorker:

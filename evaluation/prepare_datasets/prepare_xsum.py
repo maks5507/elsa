@@ -24,13 +24,13 @@ def prepare_evaluation_xsum_dataset(dataset_path, split_file, src_path, tgt_path
             source = text[1]
             text = text[0]
 
-            text = text.split('[SN]FIRST-SENTENCE[SN]')[1].split('\n')[0]
+            text = text.split('[SN]FIRST-SENTENCE[SN]')[1].split('\n')[1]
 
             with open(f'{src_path}/{path.stem}.src', 'w') as fw:
                 fw.write(f'{source}')
 
             with open(f'{tgt_path}/{path.stem}.summary', 'w') as fw:
-                fw.write(f'text')
+                fw.write(f'{text}')
         except KeyboardInterrupt:
             break
         except:

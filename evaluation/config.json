@@ -1,0 +1,104 @@
+{
+  "inference_processor_cnn": {
+    "prefix": "./inference_processor/inference_processor.py",
+    "name": "inference_processor",
+    "mask": "*.src",
+    "texts": "../datasets/cnn/src",
+
+    "init_args": {
+	"save_path": "../summaries/cnn",
+        "elsa_params": {
+          "weights": [1, 1],
+          "abstractive_base_model": "bart",
+          "base_dataset": "cnn",
+          "stopwords": "../data/stopwords.txt",
+          "fasttext_model_path": "../datasets/cnn/elsa-fasttext-cnn.bin",
+          "udpipe_model_path": "../data/english-ewt-ud-2.5-191206.udpipe"
+        }
+    },
+
+    "run_args": {
+      "model_params": {
+        "num_beams": 10,
+	"max_length": 300,
+	"min_length": 55,
+	"no_repeat_ngram_size": 3
+      }
+    },
+
+    "n_jobs": 7,
+    "add_process_num": false,
+
+    "depends_on": [],
+    "mode": "processor"
+  },
+
+  "inference_processor_xsum": {
+    "prefix": "../inference_processor/inference_processor.py",
+    "name": "inference_processor",
+    "mask": "*.src",
+    "texts": "../datasets/xsum/src",
+
+    "init_args": {
+        "save_path": "../summaries/xsum",
+        "elsa_params": {
+          "weights": [1, 1],
+          "abstractive_base_model": "bart",
+          "base_dataset": "xsum",
+          "stopwords": "../data/stopwords.txt",
+          "fasttext_model_path": "../datasets/xsum/elsa-fasttext-xsum.bin",
+          "udpipe_model_path": "../data/english-ewt-ud-2.5-191206.udpipe"
+        }
+    },
+
+    "run_args": {
+      "model_params": {
+        "num_beams": 10,
+        "max_length": 300,
+        "min_length": 55,
+        "no_repeat_ngram_size": 3
+      }
+    },
+
+    "n_jobs": 6,
+    "add_process_num": false,
+
+    "depends_on": [],
+    "mode": "processor"
+  },
+
+  "inference_processor_gazeta": {
+    "prefix": "../inference_processor/inference_processor.py",
+    "name": "inference_processor",
+    "mask": "*.src",
+    "texts": "../datasets/gazeta/src",
+
+    "init_args": {
+        "save_path": "../summaries/gazeta",
+        "elsa_params": {
+          "weights": [1, 1],
+          "abstractive_base_model": "mbart",
+          "base_dataset": "gazeta",
+          "stopwords": "../data/stopwords.txt",
+          "fasttext_model_path": "../datasets/gazeta/fasttext-gazeta.bin",
+          "udpipe_model_path": "../data/russian-gsd-ud-2.4-190531.udpipe"
+        }
+    },
+
+    "run_args": {
+      "model_params": {
+        "use_lemm": true,
+	"num_beams": 10,
+        "max_length": 300,
+        "min_length": 55,
+        "no_repeat_ngram_size": 3
+      }
+    },
+
+    "n_jobs": 3,
+    "add_process_num": false,
+
+    "depends_on": [],
+    "mode": "processor"
+  }
+}

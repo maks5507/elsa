@@ -34,35 +34,30 @@
         this.style.height = Math.max(this.scrollHeight, starting_height) + 'px';
       });
 
-      {
-        %
-        for model_name in models %
-      }
-      $("#{{ model_name }}").click(function() {
-        type = '{{ model_name }}'; {
-          %
-          for model_name in models %
-        }
-        $('#{{ model_name }}-li').removeClass('active'); {
-          %
-          endfor %
-        }
-        $('#' + type + '-li').addClass('active');
-      }); {
-        %
-        endfor %
-      }
+      {% for model_name in models %}
+
+        $("#{{ model_name }}").click(function() {
+          type = '{{ model_name }}'; 
+	  {% for model_name in models %}
+            $('#{{ model_name }}-li').removeClass('active'); 
+	  {% endfor %}
+          $('#' + type + '-li').addClass('active');
+        }); 
+
+      {% endfor %}
 
       $("#submit").click(function() {
         let data = {};
         data['text'] = $("#textarea").val();
         data['elsa_id'] = type;
+        data['type'] = 'elsa-request';
 
         $('#loader').fadeIn(10);
 
         $.ajax({
           type: "POST",
-          url: "/api/v1/run",
+          url: "https://arxiv-search.mipt.ru/complexity",
+          timeout: 300000,
           data: JSON.stringify(data),
           success: function(result) {
             $('#loader').fadeOut(0);

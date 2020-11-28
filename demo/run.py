@@ -2,7 +2,7 @@
 # Created by Maksim Eremeev (mae9785@nyu.edu)
 #
 
-from . import pathmagic
+import pathmagic
 pathmagic.add_to_path(1)
 
 from worker_compose import Launcher
