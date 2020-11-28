@@ -6,8 +6,11 @@ import re
 from nltk.tokenize.toktok import ToktokTokenizer
 from nltk.corpus import stopwords
 import pymorphy2.MorphAnalyzer
-#p = Preprocessing()
-#p.preproc(check_stopwords=True, use_stemming=True, use_lemmatization=False)
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
+from pymystem3 import Mystem
+import chardet
+
 
 class Preprocessing:
     def __init__(self, stopwords: str):
@@ -44,7 +47,28 @@ class Preprocessing:
 
 
     def stem(self,text: str):
-        pass
+
+        words=word_tokenize(text)
+        #stems=[PorterStemmer().stem(w) for w in words]
+        stems = " ".join(PorterStemmer().stem(w) for word in words)
+        return stems
 
     def lemmatize(self,text: str):
-        pass
+
+        codepage = chardet.detect(text)['encoding']
+        text = text.decode(codepage)
+        text = " ".join(word.lower() for word in text.split()) #lowercasing and removing short words
+        text = re.sub('\-\s\r\n\s{1,}|\-\s\r\n|\r\n', '', text) #deleting newlines and line-breaks
+        text = re.sub('[.,:;%©?*,!@#$%^&()\d]|[+=]|[[]|[]]|[/]|"|\s{2,}|-', ' ', text) #deleting symbols
+        text= " ".join(pymorphy2.MorphAnalyzer().parse(unicode(word))[0].normal_form
+        for word in text.split())
+        text=text.encode('utf-8')
+        return text
+
+        '''
+        lemmas=Mystem().lemmatize(text)
+        return ' '.join(lemmas)
+        '''
+
+        #p = Preprocessing()
+        #p.preproc(check_stopwords=True, use_stemming=True, use_lemmatization=False)

@@ -15,7 +15,3 @@ class SentenceTokenizer:
         sent_tokenizer = PunktSentenceTokenizer(text)
         self.sent_toks = sent_tokenizer.tokenize(text)
         return self.sent_toks
-
-
-#a=SentenceTokenizer
-#print(a.tokenize('whats up? whats new?'))
