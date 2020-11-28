@@ -13,5 +13,3 @@ services:
     container_name: elsa-demo
     network_mode: host
     restart: always
-    volumes: 
-      - ".:/root/" 

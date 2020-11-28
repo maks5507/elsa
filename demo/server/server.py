@@ -30,9 +30,9 @@ class AsyncServer(APIResource):
     @GET(b"^/$")
     def main(self, request):
         try:
-            self.__async_handler(request, 'elsa',
+            self.__async_handler(request, 'elsa-demo',
                                  {},
-                                 'elsa')
+                                 'elsa-demo')
             return NOT_DONE_YET
         except Exception:
             log.failure('')

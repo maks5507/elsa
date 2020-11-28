@@ -3,10 +3,10 @@
 #
 
 import jinja2
-from .. import noexcept
+from worker_compose import noexcept
 
 
-class Renderer:
+class RendererWorker:
     def __init__(self, log, main_template_path, models, models_values):
         self.log = log
         self.main_template_path = main_template_path

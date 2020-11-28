@@ -730,7 +730,7 @@ class Attention(nn.Module):
             attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
             reshaped = key_padding_mask.clone()
             reshaped = reshaped.unsqueeze(1).unsqueeze(2)
-            masked = reshaped == -np.inf
+            masked = torch.isinf(reshaped)
             reshaped[masked] = -np.inf
             reshaped[~masked] = 0.
             attn_weights = attn_weights + reshaped
@@ -738,25 +738,14 @@ class Attention(nn.Module):
         attn_weights = F.softmax(attn_weights, dim=-1)
 
         if key_padding_mask is not None:
-            
-            x = attn_weights.clone()
-
             attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
             reshaped = key_padding_mask.unsqueeze(1).unsqueeze(2)
     
-            #print(11, attn_weights, attn_weights.sum(-1))
-
             attn_weights = attn_weights * reshaped
             attn_weights /= attn_weights.sum(dim=-1).unsqueeze(-1)
 
-            #print(22, attn_weights, attn_weights.sum(-1))
-
             attn_weights = attn_weights.view(bsz * self.num_heads, tgt_len, src_len)
 
-            y = attn_weights.clone()
-
-            #print(x - y)
-        # attn_weights = F.softmax(attn_weights, dim=-1)
         attn_probs = F.dropout(attn_weights, p=self.dropout, training=self.training)
 
         assert v is not None

@@ -2,8 +2,10 @@
 # Created by Maksim Eremeev (mae9785@nyu.edu)
 #
 
+import pathmagic
+pathmagic.add_to_path(1)
 
-from .launcher import Launcher
+from worker_compose import Launcher
 import argparse
 
 
