@@ -1,1 +1,1 @@
-from .summarization_worker import SummarizationWorker
+from .inference_processor import InferenceProcessor

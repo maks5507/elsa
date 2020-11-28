@@ -1,4 +1,7 @@
-from pathlib import Path
+#
+# Created by Maksim Eremeev (mae9785@nyu.edu)
+#
+
 import argparse
 import re
 
