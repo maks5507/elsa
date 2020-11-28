@@ -2,8 +2,8 @@
 # Created by Maksim Eremeev (mae9785@nyu.edu)
 #
 
-from tldr import Elsa
-from . import noexcept
+from elsa import Elsa
+from worker_compose import noexcept
 import json
 
 
@@ -17,7 +17,7 @@ class SummarizationWorker:
             self.elsas[elsa_id] = Elsa(**elsa_params)
 
     @noexcept(default_value='{"data": [], "errors": []}')
-    def run(self, text, elsa_id):
+    def run(self, text, elsa_id, type):
         elsa_id = elsa_id.decode()
         text = text.decode()
         summary = self.elsas[elsa_id].summarize(text)

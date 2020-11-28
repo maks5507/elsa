@@ -22,6 +22,6 @@ class ExtractiveAttentionMask:
         mask = torch.where(mapping_tensor == -1, torch.tensor(1), torch.tensor(0)).to(bool)
         attention_mask[mask] = 0.
 
-        attention_mask = F.softmax(attention_mask, dim=-1)
+        attention_mask = F.softmax(attention_mask, dim=-1)[:512]
 
         return attention_mask.unsqueeze(0)

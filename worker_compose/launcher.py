@@ -7,10 +7,10 @@ from pathlib import Path
 import json
 import multiprocessing
 from twisted.logger import Logger, textFileLogObserver
-import importlib
+import importlib.util
 
-from worker import Worker
-from processor import Processor
+from .worker import Worker
+from .processor import Processor
 
 
 class Launcher:
@@ -49,7 +49,11 @@ class Launcher:
                 init_args['log'] = self.log
 
                 prefix = jobs[job_id]['prefix']
-                module = importlib.import_module(f'{prefix}.{module_name}')
+
+                spec = importlib.util.spec_from_file_location(module_name, prefix)
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+
                 attr = getattr(module, class_name)
                 jobs[job_id]['instance'] = attr(**init_args)
 

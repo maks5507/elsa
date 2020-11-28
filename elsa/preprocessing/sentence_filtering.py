@@ -14,5 +14,25 @@ class SentenceFiltering:
         pos_dep_tags: list of sentences, each sentence is presented by list of (POS, DEP_REL) tags of each token
         returns: indices of approved sentences
         """
-        lst = list(range(len(pos_dep_tags)))
-        return lst
+        filtered_sentences = []
+
+        for i, sentence_tags in enumerate(pos_dep_tags):
+            num_sbj = 0
+            num_sbj_prp = 0
+
+            num_verbs = 0
+            for tag, dep in sentence_tags:
+                if dep == 'nsubj':
+                    num_sbj += 1
+                if dep == 'nsubj' and tag in ['PRON', 'DET', 'PRP$', 'PRP', 'DT']:
+                    num_sbj_prp += 1
+                if 'VB' in tag or 'VERB' in tag:
+                    num_verbs += 1
+
+            if num_sbj_prp > 0:
+                continue
+            if num_verbs == 0:
+                continue
+
+            filtered_sentences += [i]
+        return filtered_sentences

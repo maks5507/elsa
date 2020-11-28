@@ -7,7 +7,14 @@
 
 # ELSA: Extractive Linking of Summarization Approaches
 
-Authors: Maksim Eremeev (mae9785@nyu.edu), Mars Wei-Lun Huang (wh2103@nyu.edu), Eric Spector (), Jeffrey Tumminia ()
+**Authors:** Maksim Eremeev (mae9785@nyu.edu), Mars Wei-Lun Huang (wh2103@nyu.edu), Eric Spector (ejs618@nyu.edu), Jeffrey Tumminia (jt2565@nyu.edu)
+
+## Installation
+
+```bash
+python setup.py build
+pip install .
+```
 
 ## Quick Start with ELSA
 
@@ -31,7 +38,7 @@ elsa = Elsa(weights=[1, 1], abstractive_base_model='bart', base_dataset='cnn', s
 elsa.summarize(article, **abstractive_model_params)
 ```
 
-### Init Parameters
+### `__init__` parameters
 
 - `weights`: `List[float]` -- weights for TextRank and Centroid extractive summarizations.
 - `abstractive_base_model`: `str` -- model used on the abstractive step. Either `'bart'` or `'pegasus'`.
@@ -39,6 +46,16 @@ elsa.summarize(article, **abstractive_model_params)
 - `stopwords`: `str` -- path to the list of stopwords.
 - `fasttext_model_path`: `str` -- path to the `*.bin` checkpoint of a trained FastText model (see below for the training instructions).
 - `udpipe_model_path`: `str` -- path to the `*.udpipe` checkpoint of the pretrained UDPipe model (see `data` directory for the files).
+
+### `summarize` parameters
+
+* `factor`: `float` -- percentage (a number from 0 to 1) of sentences to keep in extractive summary (default: `0.5`)
+* `use_lemm`: `bool` -- whether to use lemmatization on the preprocessing step (default: `False`)
+* `use_stem`: `bool` -- whether too use stemming on the preprocessing step (default: `False`)
+* `check_stopwords`: `bool` -- whether to filter stopwords on the preprocessing step (default: `True`)
+* `check_length`: `bool` -- whether to filter tokens shorter than 4 symbols (default: `True`)
+
+* `abstractive_model_params`: `dict` -- any parameters for the huggingface model's `generate` method
 
 ## Datasets used for experiments
 
@@ -70,22 +87,7 @@ XSum: [Link](https://www.icloud.com/iclouddrive/0bR42r-miX36v9p3rM-s3YR0Q#elsa-f
 
 Gazeta: [Link](https://www.icloud.com/iclouddrive/0E7muKOAdlb_EvbMPQyTN2sLw#elsa-fasttext-xsum)
 
-#### How we trained them 
-
-**Note:** You have to adjust the `lr` , `lrUpdateRate`, and `epoch` params depending on the size of your collection. 
-
-`FASTTEXT_INPUT_FILE` is a path for the file generatied with `fasttext/prepare_{DATASET_NAME}_fasttext.py` script. `OUTPUT_NAME` is a stem of the output files `OUTPUT_NAME.bin` and `OUTPUT_NAME`.vec.
-
-```bash
-cd fasttext
-
-docker build . -t elsa-fasttext-image
-docker run -it -d -v "HOME_DIRECTORY_ABSOLUTE_PATH:/root/" --name elsa-fasttext elsa-fasttext-image
-
-docker attach elsa-fasttext
-
-fasttext skipgram -input FASTTEXT_INPUT_FILE.txt -verbose 2 -minCount 5 -lr 0.05 -dim 100 -ws 5 -epoch 20 -wordNgrams 1 -minn 3 -maxn 7 -loss ns -thread 16 -neg 20 -lrUpdateRate 100 -output OUTPUT_NAME
-```
+See [our FastText page](https://github.com/maks5507/elsa/blob/master/fasttext_scripts/) for training details.
 
 ## UDPipe models
 

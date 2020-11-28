@@ -5,13 +5,11 @@ services:
     build:
       context: .
       args:
-        - renderer_queue=elsa
-        - demo_queue=elsa-demo
-        - rmq_connect=amqp://admin:admin1@localhost:5672
+        - renderer_queue=elsa-demo
+        - demo_queue=elsa-summarization
+        - rmq_connect=amqp://guest:guest@localhost:5672
       network: host
     command: "python /root/server/server.py -c /root/server/config.json && python /root/run.py -c /root/config.json"
     container_name: elsa-demo
     network_mode: host
     restart: always
-    volumes:
-      - ".:/root/"
