@@ -51,7 +51,7 @@ elsa.summarize(article, **abstractive_model_params)
 
 * `factor`: `float` -- percentage (a number from 0 to 1) of sentences to keep in extractive summary (default: `0.5`)
 * `use_lemm`: `bool` -- whether to use lemmatization on the preprocessing step (default: `False`)
-* `use_stem`: `bool` -- whether too use stemming on the preprocessing step (default: `False`)
+* `use_stem`: `bool` -- whether to use stemming on the preprocessing step (default: `False`)
 * `check_stopwords`: `bool` -- whether to filter stopwords on the preprocessing step (default: `True`)
 * `check_length`: `bool` -- whether to filter tokens shorter than 4 symbols (default: `True`)
 
@@ -91,7 +91,7 @@ See [our FastText page](https://github.com/maks5507/elsa/blob/master/fasttext_sc
 
 ## UDPipe models
 
-UDPipe models avaliable for English:
+UDPipe models available for English:
 
 - UDPipe-English EWT: [Link](https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3131/english-ewt-ud-2.5-191206.udpipe?sequence=17&isAllowed=y) **(Used in our experiments, see `data` directory)**
 - UDPipe-English Patut: [Link](https://lindat.mff.cuni.cz/repository/xmlui/bitstream/handle/11234/1-3131/english-partut-ud-2.5-191206.udpipe?sequence=29&isAllowed=y)
@@ -116,7 +116,7 @@ HuggingFace checkpoint: [Link](https://www.icloud.com/iclouddrive/0ogqejTokfHn1t
 
 ## Codestyle check
 
-Before making a commmit / pull-request, please check the coding style by running the bash script in the `codestyle` directory. Make sure that your folder is included in `codestyle/pycodestyle_files.txt` list.
+Before making a commit / pull-request, please check the coding style by running the bash script in the `codestyle` directory. Make sure that your folder is included in `codestyle/pycodestyle_files.txt` list.
 
 Your changes will not be approved if the script indicates any incongruities (this does not apply to 3rd-party code). 
 
