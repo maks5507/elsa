@@ -1,0 +1,97 @@
+<div class="content clearfix">
+    <div class="left fix_width">
+        <p class='source-text-title'>Article</p>
+        <p class="fix_height page">{{source_text}}</p>
+        <p class='source-text-title' id='aaa'>Summary #1</p>
+        <p class='page'>{{human_based_summary}}</p>
+        <p class='source-text-title'>Summary #2</p>
+        <p class='fix_height page'>{{machine_based_summary}}</p><br>
+
+        {{button label="To questions!" href=url_right size="L"}}
+    </div>
+
+    <div class="right fix_width">
+        <div class='question-grid'>
+            <div class='question-item'>
+                <span class='question'>
+                  Q1. Does the summary #1 retain the main idea of the source text?
+                </span><br>
+                {{field type="radio" name="s1-main-idea" label="Yes" value=true}}<br>
+                {{field type="radio" name="s1-main-idea" label="No" value=false}}<br>
+            </div>
+            <div class='question-item'>
+                <span class='question'>
+                  Q2. Does the summary #2 retain the main idea of the source text?
+                </span><br>
+                {{field type="radio" name="s2-main-idea" label="Yes" value=true}}<br>
+                {{field type="radio" name="s2-main-idea" label="No" value=false}}<br>
+            </div>
+            <div class='question-item'>
+                <span class='question'>
+                  Q3. Does the summary #1 syntatically and grammatically coherent?
+                </span><br>
+                {{field type="radio" name="s1-coherence" label="Yes" value=true}}<br>
+                {{field type="radio" name="s1-coherence" label="No" value=false}}<br>
+            </div>
+            <div class='question-item'>
+                <span class='question'>
+                  Q4. Is the summary #2 syntatically and grammatically coherent?
+                </span><br>
+                {{field type="radio" name="s2-coherence" label="Yes" value=true}}<br>
+                {{field type="radio" name="s2-coherence" label="No" value=false}}<br>
+            </div>
+            <div class='question-item'>
+                <span class='question'>
+                  Q5. Does the summary #1 distort any facts present in the source text?
+                </span><br>
+                {{field type="radio" name="s1-factual-misrepresentation" label="Yes" value=true}}<br>
+                {{field type="radio" name="s1-factual-misrepresentation" label="No" value=false}}<br>
+            </div>
+            <div class='question-item'>
+                <span class='question'>
+                  Q6. Does the summary #2 distort any facts present in the source text?
+                </span><br>
+                {{field type="radio" name="s2-factual-misrepresentation" label="Yes" value=true}}<br>
+                {{field type="radio" name="s2-factual-misrepresentation" label="No" value=false}}<br>
+            </div>
+            <div class='question-item'>
+                <span class='question'>
+                  Q7. Does summary #1 contain sentences identical to those found in the source text?
+                </span><br>
+                {{field type="radio" name="s1-identical-sentences" label="Yes" value=true}}<br>
+                {{field type="radio" name="s1-identical-sentences" label="No" value=false}}<br>
+            </div>
+            <div class='question-item'>
+                <span class='question'>
+                  Q8. Does summary #2 contain sentences identical to those found in the source text?
+                </span><br>
+                {{field type="radio" name="s2-identical-sentences" label="Yes" value=true}}<br>
+                {{field type="radio" name="s2-identical-sentences" label="No" value=false}}<br>
+            </div>
+            <div class='question-item'>
+                <span class='question'>
+                  Q9. Would you be able to deduce that a human did not write summary #1?
+                </span><br>
+                {{field type="radio" name="s1-machine" label="Yes" value=true}}<br>
+                {{field type="radio" name="s1-machine" label="No" value=false}}<br>
+            </div>
+            <div class='question-item-penult'>
+                <span class='question'>
+                  Q10. Would you be able to deduce that a human did not write summary #2?
+                </span><br>
+                {{field type="radio" name="s2-machine" label="Yes" value=true}}<br>
+                {{field type="radio" name="s2-machine" label="No" value=false}}<br>
+            </div>
+            <div class='question-item-last'>
+                <span class='question'>
+                  Q11. On a scale of 1 to 5 (5 being nearly identical), how closely does summary #2 resemble summary #1?
+                </span><br>
+                {{field type="radio" name="resemblance" label="1" value=1}}
+                {{field type="radio" name="resemblance" label="2" value=2}}
+                {{field type="radio" name="resemblance" label="3" value=3}}
+                {{field type="radio" name="resemblance" label="4" value=4}}
+                {{field type="radio" name="resemblance" label="5" value=5}}
+            </div>
+        </div>
+    </div>
+</div>
