@@ -1,0 +1,37 @@
+{
+  "inference_processor_cnn": {
+    "prefix": "./inference_processor/abstractive_inference_processor.py",
+    "name": "abstractive_inference_processor",
+    "mask": "*.src",
+    "texts": "../datasets/cnn/src",
+
+    "init_args": {
+        "sentence_score_path": "../datasets/cnn/sentences_scores",
+	    "save_path": "../datasets/cnn/summaries",
+        "elsa_params": {
+          "weights": [1, 1],
+          "abstractive_base_model": "bart",
+          "base_dataset": "cnn",
+          "stopwords": "../data/stopwords.txt",
+          "fasttext_model_path": "../datasets/cnn/elsa-fasttext-cnn.bin",
+          "udpipe_model_path": "../data/english-ewt-ud-2.5-191206.udpipe"
+        }
+    },
+
+    "run_args": {
+      "model_params": {
+        "num_beams": 10,
+        "max_length": 300,
+        "min_length": 55,
+        "no_repeat_ngram_size": 3
+      },
+      "batch_size": 32
+    },
+
+    "n_jobs": 1,
+    "add_process_num": false,
+        
+    "depends_on": [],
+    "mode": "processor"
+  }
+}

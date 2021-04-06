@@ -1,0 +1,31 @@
+{
+  "inference_processor_cnn": {
+    "prefix": "./inference_processor/extractive_inference_processor.py",
+    "name": "extractive_inference_processor",
+    "mask": "*.src",
+    "texts": "../datasets/cnn/src",
+
+    "init_args": {
+        "sentence_score_path": "../datasets/cnn/sentences_scores",
+        "elsa_params": {
+          "weights": [1, 1],
+          "abstractive_base_model": "bart",
+          "base_dataset": "cnn",
+          "stopwords": "../data/stopwords.txt",
+          "fasttext_model_path": "../datasets/cnn/elsa-fasttext-cnn.bin",
+          "udpipe_model_path": "../data/english-ewt-ud-2.5-191206.udpipe"
+        }
+    },
+
+    "run_args": {
+      "model_params": {
+      }
+    },
+
+    "n_jobs": 8,
+    "add_process_num": false,
+
+    "depends_on": [],
+    "mode": "processor"
+  }
+}

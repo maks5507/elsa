@@ -25,6 +25,8 @@ class Textrank:
             if embedding['name'] == 'fasttext':
                 sentence_vectors = self.util.build_fasttext_sentence_vectors(
                     sentences, embedding.get('model', None))
+        if len(sentence_vectors) == 0:
+            return []
 
         sim_matrix = self.util.build_similarity_matrix(sentence_vectors, normalized=True)
         scores = self.util.pagerank(sim_matrix).flatten().tolist()

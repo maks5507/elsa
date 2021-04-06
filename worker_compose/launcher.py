@@ -81,15 +81,18 @@ class Launcher:
                             if job['add_process_num']:
                                 job['run_args']['process_num'] = j
 
-                            target = job['instance'].run
                             if job['mode'] == 'worker':
                                 target = Worker(job['instance'].run, self.log).run
                             elif job['mode'] == 'processor':
-                                target = Processor(job['instance']).run
+                                batch_size = job['run_args'].get('batch_size', 1)
+                                if batch_size > 1:
+                                    Processor(job['instance']).run_batch(**job['run_args'])
+                                else:
+                                    target = Processor(job['instance']).run
 
-                            processes[job_id] += [multiprocessing.Process(target=target,
-                                                                          kwargs=job['run_args'])]
-                            processes[job_id][-1].start()
+                                    processes[job_id] += [multiprocessing.Process(target=target,
+                                                                                  kwargs=job['run_args'])]
+                                    processes[job_id][-1].start()
 
                 for job_id in processes:
                     for process in processes[job_id]:

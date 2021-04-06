@@ -10,3 +10,6 @@ class Processor:
     def run(self, chunk, **kwargs):
         for path in chunk:
             self.instance.run(path, **kwargs)
+
+    def run_batch(self, chunk, **kwargs):
+        self.instance.run(chunk, **kwargs)
